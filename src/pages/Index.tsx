@@ -8,6 +8,7 @@ import {
   Activity, Grid, Radio, Camera, Crosshair, BarChart,
   Layers2, Languages, BookOpen, BrainCircuit, Users, MessageSquare, Video, Search
 } from 'lucide-react';
+import { generateCV } from '@/utils/generateCV';
 import { translations, type ExperienceItem } from '@/data/translations';
 import { ResolveIcon, AdobeAeIcon, AdobePrIcon, AeCompIcon, PrSequenceIcon, DrSequenceIcon } from '@/components/cv/CvIcons';
 import { ExportModal } from '@/components/cv/ExportModal';
@@ -150,7 +151,10 @@ const Index = () => {
     setDraggingWheel(null);
   }, []);
 
-  const handleDownloadPDF = () => { setShowWarning(false); };
+  const handleDownloadPDF = () => {
+    generateCV(lang as 'es' | 'en');
+    setShowWarning(false);
+  };
 
   const getHeaderInfo = () => {
     switch (activeMode) {
