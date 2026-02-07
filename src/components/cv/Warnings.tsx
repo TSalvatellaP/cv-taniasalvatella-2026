@@ -1,0 +1,106 @@
+import { useState } from 'react';
+import { X, AlertTriangle, Info, Search, Download, FileText } from 'lucide-react';
+import type { TranslationData } from '@/data/translations';
+
+interface WarningProps {
+  onOpenClassic: () => void;
+  onClose: () => void;
+  t: TranslationData;
+}
+
+export const AEWarning = ({ onOpenClassic, onClose, t }: WarningProps) => {
+  const [showLog, setShowLog] = useState(false);
+  return (
+    <div className="absolute bottom-0 left-0 right-0 z-40 flex flex-col items-center">
+      {showLog && (
+        <div className="bg-[#2D2D2D] border border-[#444] w-80 md:w-[450px] rounded-md overflow-hidden animate-in zoom-in duration-200 mb-4 shadow-2xl border-orange-500/50">
+          <div className="bg-panel-header px-3 py-2 flex items-center justify-between border-b border-black">
+            <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{t.ae_warning_title}</span>
+            <button onClick={() => setShowLog(false)}><X size={14} className="text-muted-foreground hover:text-foreground" /></button>
+          </div>
+          <div className="p-6 flex gap-4 bg-[#2D2D2D]">
+            <div className="text-orange-500"><AlertTriangle size={32} /></div>
+            <div className="flex-1 text-left">
+              <p className="text-secondary-foreground text-xs mb-4">{t.ae_warning_desc}</p>
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setShowLog(false)} className="px-4 py-1.5 text-[10px] bg-[#3D3D3D] text-secondary-foreground hover:bg-[#4D4D4D] rounded-sm">{t.cancel}</button>
+                <button onClick={onOpenClassic} className="px-4 py-1.5 text-[10px] bg-aftereffects text-black font-bold rounded-sm hover:brightness-110 flex items-center gap-2">
+                  <Download size={12} /> {t.download_pdf}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="ae-warning-bar w-full flex items-center justify-between px-3 py-1 animate-in fade-in slide-in-from-bottom duration-300">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 text-black">
+            <AlertTriangle size={13} fill="currentColor" />
+            <Info size={13} fill="currentColor" />
+          </div>
+          <span className="text-[10px] font-bold text-black truncate uppercase tracking-tighter">PDF Backup Available - Click Search to Download</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setShowLog(true)} className="bg-black/20 hover:bg-black/30 p-1 rounded-sm transition-colors text-black">
+            <Search size={13} strokeWidth={3} />
+          </button>
+          <button onClick={onClose} className="hover:bg-black/20 p-1 rounded-sm text-black">
+            <X size={13} strokeWidth={3} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const PRWarning = ({ onOpenClassic, onClose, t }: WarningProps) => (
+  <div className="absolute inset-0 flex items-center justify-center z-40 bg-black/40 backdrop-blur-[1px]">
+    <div className="bg-[#232323] border border-premiere w-[400px] rounded shadow-2xl overflow-hidden animate-in zoom-in duration-150">
+      <div className="bg-premiere px-3 py-1 flex items-center justify-between">
+        <span className="text-[10px] text-white font-bold uppercase">{t.pr_warning_title}</span>
+        <X size={12} className="text-white cursor-pointer" onClick={onClose} />
+      </div>
+      <div className="p-6 flex flex-col gap-4">
+        <div className="flex gap-4">
+          <div className="text-destructive"><FileText size={40} /></div>
+          <div className="text-secondary-foreground text-xs">
+            <p className="font-bold mb-1">CV_Classic_Offline.pdf</p>
+            <p className="text-muted-foreground">{t.pr_warning_desc}</p>
+          </div>
+        </div>
+        <div className="flex justify-end gap-2 mt-4">
+          <button onClick={onClose} className="px-6 py-1 border border-muted-foreground text-muted-foreground text-[11px] hover:bg-white/5">{t.ignore}</button>
+          <button onClick={onOpenClassic} className="px-6 py-1 bg-premiere text-white text-[11px] font-bold hover:brightness-110 flex items-center gap-2">
+            <Download size={12} /> {t.download_pdf}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export const DRWarning = ({ onOpenClassic, onClose, t }: WarningProps) => (
+  <div className="absolute inset-0 flex items-center justify-center z-40 bg-black/60">
+    <div className="bg-panel-deep w-[380px] rounded-lg border border-white/10 p-1 animate-in zoom-in duration-200">
+      <div className="p-8 text-center space-y-6">
+        <div className="flex justify-center">
+          <div className="w-12 h-12 rounded-full border-2 border-davinci flex items-center justify-center text-davinci">
+            <Info size={24} />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-foreground font-bold text-sm">{t.dr_warning_title}</h3>
+          <p className="text-muted-foreground text-xs px-4">{t.dr_warning_desc}</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <button onClick={onOpenClassic} className="w-full py-2 bg-davinci text-black font-bold rounded-md hover:brightness-110 transition-colors text-xs flex items-center justify-center gap-2">
+            <Download size={14} /> {t.download_pdf}
+          </button>
+          <button onClick={onClose} className="w-full py-2 bg-secondary text-muted-foreground rounded-md hover:text-foreground transition-colors text-xs">
+            {t.follow_dr}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
