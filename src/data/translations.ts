@@ -7,6 +7,9 @@ export interface ExperienceItem {
   labelPr: string;
   labelAe: string;
   fullHistory: { year: string; label: string; desc: string }[];
+  type?: string;
+  color?: string;
+  duration?: string;
 }
 
 export interface TranslationData {
@@ -108,7 +111,7 @@ export const translations: Record<string, TranslationData> = {
     backToBin: "Volver al Contenedor",
     eduComp: "Educación.comp",
     workspaceTip: "Consejo del Espacio de Trabajo",
-    tipDesc: "Haz doble clic para cargar en el Monitor. Usa Exportar para contacto.",
+    tipDesc: "Doble clic para cargar. Usa Exportar para contacto.",
     assetInventory: "Inventario de Activos",
     masterMetadata: "Metadatos Maestro",
     playing: "REPRODUCIENDO: TIEMPO REAL",
@@ -133,7 +136,7 @@ export const translations: Record<string, TranslationData> = {
     dr_warning_desc: "Esta versión interactiva ha sido etalonada para web. ¿Deseas descargar la versión master en PDF?",
     follow_dr: "Seguir en DaVinci Resolve",
     job_title: "Edición | Broadcast | IA",
-    layerLabel: "Capa",
+    layerLabel: "Nombre de capa",
     nodeInput: "Entrada",
     nodeBalance: "Balance",
     nodeGrading: "Etalonaje",
@@ -159,62 +162,74 @@ export const translations: Record<string, TranslationData> = {
       shifts: "Turnos Rotativos"
     },
     phrases: [
-      "Sincronizando la precisión del broadcast con la magia del vídeo.",
-      "Creatividad con base técnica.",
-      "Audiovisual, técnico y digital en una sola persona.",
-      "Donde se cruzan la imagen, la tecnología y la narrativa.",
-      "Perfil híbrido para proyectos visuales complejos.",
-      "Entiendo la imagen desde la cámara hasta el código.",
-      "No solo creo vídeo. Entiendo cómo funciona."
+      "Sin drop frames.",
+      "Señal estable.",
+      "Todo en sync.",
+      "Frame a frame.",
+      "Broadcast safe.",
+      "Timecode continuo.",
+      "Edición invisible.",
+      "Ritmo en cada corte.",
+      "Luz lista. Cámara lista.",
+      "Render limpio."
     ],
     techSkills: [
-      { n: "Adobe Premiere", v: "PRO" }, { n: "After Effects", v: "EXPERTO" },
-      { n: "Resolve DaVinci", v: "MID" }, { n: "Avid Interplay", v: "MID" },
-      { n: "Final Cut Pro X", v: "MID" }, { n: "Adobe Illustrator", v: "BÁSICO" }
+      { n: "Adobe Premiere", v: "PRO" }, { n: "After Effects", v: "MID" },
+      { n: "Resolve Davinci", v: "MID" }, { n: "Avid Interplay", v: "MID" },
+      { n: "Final Cut Pro X", v: "MID" }, { n: "Adobe Illustrator", v: "BÁSICO" },
+      { n: "Cinema 4D", v: "BÁSICO" }
     ],
     genAiModels: ["Sora", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
     exp_data: [
       {
         id: "motion", title: "Edición / Motion", period: "2014–25", company: "Wata Studio / Inmersive Creature",
-        iconName: "Film", labelPr: "#D580A5", labelAe: "#B55A7E",
+        iconName: "Film", labelPr: "#E085B2", labelAe: "#A680B8",
         fullHistory: [
           { year: "2025 - Actualidad", label: "Wata Studio", desc: "Realización de vídeos promocionales para RRSS, documentales y piezas audiovisuales." },
           { year: "2025", label: "Inmersive Creature", desc: "Edición y animación 2D con After Effects." },
-          { year: "2024", label: "Plena Inclusión", desc: "Diseño y desarrollo de vídeo inclusivo en animación 2D con After Effects." }
+          { year: "2024", label: "Dim Sum Producciones", desc: "Diseño y desarrollo de vídeo inclusivo para Plena Inclusión en animación 2D con After Effects." }
         ]
       },
       {
         id: "broadcast", title: "Broadcast / MCR", period: "2007–25", company: "Prisa TV / Mediaset / Olympic / Movistar+ / TSA",
-        iconName: "Radio", labelPr: "#5E7C9D", labelAe: "#4B7A50",
+        iconName: "Radio", labelPr: "#5E7C9D", labelAe: "#6A8B9D",
         fullHistory: [
           { year: "2025", label: "Telefónica TSA", desc: "Operadora de CCG N1 TV y OTT. Monitorado y gestión de alarmas." },
-          { year: "2019-2024", label: "Beon Media", desc: "Content Operator MCR. Supervisión técnica y continuidad internacional, directos." },
+          { year: "2019-2024", label: "Beon Media", desc: "MCR Content Operator. Technical supervision and international continuity for live feeds." },
           { year: "2018-2019", label: "Olympic Channel", desc: "Coordinadora de Medios - Sistemas y Flujos de Trabajo." },
           { year: "2016-2018", label: "Movistar +", desc: "Operadora de Verificación QC. Control de calidad de los contenidos." },
-          { year: "2015-2018", label: "Mediaset", desc: "Técnica de emisión operadora de enlaces. Ingesta de Informativos Telecinco y Cuatro, Deportes." }
+          { year: "2015-2018", label: "Mediaset", desc: "Técnica de emisión operadora de enlaces. Ingesta de Informativos Telecinco y Cuatro, Deportes." },
+          { year: "2007-2014", label: "Prisa TV", desc: "Técnica de emisión operadora de enlaces. Ingesta de eventos deportivos." }
         ]
       },
       {
         id: "filmmaker", title: "Iluminación / Cámara / Edición", period: "2007–17", company: "Freelance / DSProducción",
-        iconName: "Camera", labelPr: "#7B669D", labelAe: "#506B8A",
+        iconName: "Camera", labelPr: "#7B669D", labelAe: "#9D807B",
         fullHistory: [
-          { year: "2013-2017", label: "DSProducciones", desc: "Cofundadora. Operadora de cámara e iluminación, edición y color." }
+          { year: "2013-2017", label: "DS Producciones", desc: "Cofundadora. Operadora de cámara e iluminación, edición y color." },
+          { year: "2011-2017", label: "Freelance", desc: "Operadora de cámara e iluminación, edición y color para diferentes proyectos." }
         ]
       }
     ],
     edu_data: [
-      { year: "2025", label: "PROGRAMACIÓN EN DISEÑO WEB - ADALAB" },
+      { year: "2025", label: "PROGRAMACIÓN DISEÑO WEB - ADALAB" },
+      { year: "2025", label: "DOCENCIA FORMACIÓN PROFESIONAL - SSCE0110" },
       { year: "2022", label: "MÁSTER MOTION GRAPHICS - CICE" },
-      { year: "2016", label: "LICENCIADA EN COMUNICACIÓN AUDIOVISUAL - UCM" },
-      { year: "2007", label: "T.S. IMAGEN - IES PUERTA BONITA" }
+      { year: "2016", label: "LICENCIATURA COMUNICACIÓN AUDIOVISUAL - UCM" },
+      { year: "2007", label: "TÉCNICO SUPERIOR IMAGEN - IES PUERTA BONITA" }
     ],
     art_data: [
-      { id: "reel", title: "Video Reel 2025", period: "Actual", company: "Tania Salvatella", iconName: "Play", labelPr: "#D580A5", labelAe: "#B55A7E", fullHistory: [{ year: "2025", label: "Showreel", desc: "Compilación de trabajos audiovisuales profesionales." }] }
+      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [] },
+      { id: "vid2", title: "Docu: Naturaleza Viva", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [] },
+      { id: "vid3", title: "Corto: Silencio", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [] },
+      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [] },
+      { id: "vid5", title: "Video Arte: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [] },
+      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [] }
     ]
   },
   en: {
     export: "Export",
-    lang: "Lang: EN",
+    lang: "Language: EN",
     editing: "Editing",
     color: "Color",
     effects: "Effects",
@@ -232,7 +247,7 @@ export const translations: Record<string, TranslationData> = {
     backToBin: "Back to Bin",
     eduComp: "Education.comp",
     workspaceTip: "Workspace Tip",
-    tipDesc: "Double click an item to load into Monitor. Use Export button for contact.",
+    tipDesc: "Double click to load. Use Export for contact.",
     assetInventory: "Asset Inventory",
     masterMetadata: "Master Metadata",
     playing: "PLAYING: REALTIME",
@@ -247,17 +262,17 @@ export const translations: Record<string, TranslationData> = {
     rendering: "RENDERING PROJECT",
     gpuAccel: "GPU Acceleration: Mercury Engine (Metal)",
     ae_warning_title: "After Effects - Warning",
-    ae_warning_desc: "Would you like to download a standard PDF copy of the project? A classic version is recommended for physical archiving.",
+    ae_warning_desc: "Do you want to download a copy of the project in standard PDF format? A classic version is recommended for physical archiving.",
     cancel: "Cancel",
     download_pdf: "Download PDF",
     pr_warning_title: "Premiere Pro - Media Linking",
-    pr_warning_desc: "The system has detected a PDF version available. Would you like to link this media for conventional reading?",
+    pr_warning_desc: "The system has detected an available PDF version. Do you want to link this media for conventional reading?",
     ignore: "Ignore",
     dr_warning_title: "Classic Project Export",
-    dr_warning_desc: "This interactive version has been graded for web. Would you like to download the master PDF version?",
-    follow_dr: "Stay in DaVinci Resolve",
-    job_title: "Edition | Broadcast | AI",
-    layerLabel: "Layer",
+    dr_warning_desc: "This interactive version has been graded for web. Do you want to download the master version in PDF?",
+    follow_dr: "Continue in Davinci Resolve",
+    job_title: "Editing | Broadcast | AI",
+    layerLabel: "Layer Name",
     nodeInput: "Input",
     nodeBalance: "Balance",
     nodeGrading: "Grading",
@@ -276,64 +291,76 @@ export const translations: Record<string, TranslationData> = {
       adapt: "Adaptability"
     },
     skill_levels: {
-      weak: "Working on it",
+      weak: "Not my forte",
       native: "Native",
-      love: "I love it",
+      love: "Love it",
       high: "High",
       shifts: "Rotating Shifts"
     },
     phrases: [
-      "Syncing broadcast precision with video magic.",
-      "Creativity with a technical foundation.",
-      "Audiovisual, technical, and digital in one person.",
-      "Where image, technology, and narrative intersect.",
-      "Hybrid profile for complex visual projects.",
-      "Understanding the image from camera to code.",
-      "I don't just create video. I understand how it works."
+      "No drop frames.",
+      "Stable signal.",
+      "All in sync.",
+      "Frame by frame.",
+      "Broadcast safe.",
+      "Continuous timecode.",
+      "Invisible editing.",
+      "Rhythm in every cut.",
+      "Lights ready. Camera ready.",
+      "Clean render."
     ],
     techSkills: [
-      { n: "Adobe Premiere", v: "PRO" }, { n: "After Effects", v: "EXPERT" },
-      { n: "Resolve DaVinci", v: "MID" }, { n: "Avid Interplay", v: "MID" },
-      { n: "Final Cut Pro X", v: "MID" }, { n: "Adobe Illustrator", v: "BASIC" }
+      { n: "Adobe Premiere", v: "PRO" }, { n: "After Effects", v: "MID" },
+      { n: "Resolve Davinci", v: "MID" }, { n: "Avid Interplay", v: "MID" },
+      { n: "Final Cut Pro X", v: "MID" }, { n: "Adobe Illustrator", v: "BASIC" },
+      { n: "Cinema 4D", v: "BASIC" }
     ],
     genAiModels: ["Sora", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
     exp_data: [
       {
         id: "motion", title: "Editing / Motion", period: "2014–25", company: "Wata Studio / Inmersive Creature",
-        iconName: "Film", labelPr: "#D580A5", labelAe: "#B55A7E",
+        iconName: "Film", labelPr: "#E085B2", labelAe: "#A680B8",
         fullHistory: [
           { year: "2025 - Present", label: "Wata Studio", desc: "Production of promotional videos for social media, documentaries, and audiovisual pieces." },
-          { year: "2025", label: "Inmersive Creature", desc: "2D Editing and Animation using After Effects." },
-          { year: "2024", label: "Plena Inclusión", desc: "Design and development of inclusive 2D animation videos with After Effects." }
+          { year: "2025", label: "Inmersive Creature", desc: "Editing and 2D animation with After Effects." },
+          { year: "2024", label: "Dim Sum Producciones", desc: "Design and development of inclusive video for Plena Inclusión in 2D animation with After Effects." }
         ]
       },
       {
         id: "broadcast", title: "Broadcast / MCR", period: "2007–25", company: "Prisa TV / Mediaset / Olympic / Movistar+ / TSA",
-        iconName: "Radio", labelPr: "#5E7C9D", labelAe: "#4B7A50",
+        iconName: "Radio", labelPr: "#5E7C9D", labelAe: "#6A8B9D",
         fullHistory: [
-          { year: "2025", label: "Telefónica TSA", desc: "CCG N1 TV and OTT Operator. Alarm monitoring and management." },
+          { year: "2025", label: "Telefónica TSA", desc: "CCG N1 TV and OTT Operator. Monitoring and alarm management." },
           { year: "2019-2024", label: "Beon Media", desc: "MCR Content Operator. Technical supervision and international continuity for live feeds." },
-          { year: "2018-2019", label: "Olympic Channel", desc: "Media Coordinator - Systems and workflows." },
-          { year: "2016-2018", label: "Movistar +", desc: "QC Verification Operator. Quality control of audiovisual content." },
-          { year: "2015-2018", label: "Mediaset", desc: "Broadcast links technician and operator. Ingest for Telecinco and Cuatro News and Sports." }
+          { year: "2018-2019", label: "Olympic Channel", desc: "Media Coordinator - Systems and Workflows." },
+          { year: "2016-2018", label: "Movistar +", desc: "QC Verification Operator. Quality control of content." },
+          { year: "2015-2018", label: "Mediaset", desc: "Broadcast Technician Link Operator. Ingest for Telecinco and Cuatro News, Sports." },
+          { year: "2007-2014", label: "Prisa TV", desc: "Broadcast Technician Link Operator. Ingest of sports events." }
         ]
       },
       {
         id: "filmmaker", title: "Lighting / Camera / Editing", period: "2007–17", company: "Freelance / DSProducción",
-        iconName: "Camera", labelPr: "#7B669D", labelAe: "#506B8A",
+        iconName: "Camera", labelPr: "#7B669D", labelAe: "#9D807B",
         fullHistory: [
-          { year: "2013-2017", label: "DSProducciones", desc: "Co-founder. Camera and lighting operator, video editing, and color grading." }
+          { year: "2013-2017", label: "DS Producciones", desc: "Co-founder. Camera and lighting operator, editing and color." },
+          { year: "2011-2017", label: "Freelance", desc: "Camera and lighting operator, editing and color for various projects." }
         ]
       }
     ],
     edu_data: [
       { year: "2025", label: "WEB DESIGN PROGRAMMING - ADALAB" },
-      { year: "2022", label: "MOTION GRAPHICS MASTER - CICE" },
-      { year: "2016", label: "BA IN AUDIOVISUAL COMMUNICATION - UCM" },
-      { year: "2007", label: "H.D. IN IMAGE - IES PUERTA BONITA" }
+      { year: "2025", label: "VOCATIONAL TRAINING TEACHING - SSCE0110" },
+      { year: "2022", label: "MASTER MOTION GRAPHICS - CICE" },
+      { year: "2016", label: "AUDIOVISUAL COMMUNICATION DEGREE - UCM" },
+      { year: "2007", label: "HIGHER TECHNICIAN IMAGE - IES PUERTA BONITA" }
     ],
     art_data: [
-      { id: "reel", title: "Video Reel 2025", period: "Current", company: "Tania Salvatella", iconName: "Play", labelPr: "#D580A5", labelAe: "#B55A7E", fullHistory: [{ year: "2025", label: "Showreel", desc: "Compilation of professional audiovisual works." }] }
+      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [] },
+      { id: "vid2", title: "Docu: Nature Alive", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [] },
+      { id: "vid3", title: "Short: Silence", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [] },
+      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [] },
+      { id: "vid5", title: "Video Art: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [] },
+      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [] }
     ]
   }
 };

@@ -153,3 +153,45 @@
   font-size: 11px;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
 }
+
+/* Signal failure effects */
+.signal-pixelated {
+  filter: contrast(1.5) saturate(1.2);
+  transform: scale(1.02);
+  transition: all 0.1s steps(4);
+}
+.signal-frozen {
+  filter: grayscale(0.8) contrast(1.2);
+  opacity: 0.8;
+  animation: none !important;
+}
+
+/* Software specific tabs */
+.tab-active-pr { border-top: 2px solid hsl(var(--premiere-accent)); background-color: #2D2D2D; color: white; }
+.tab-active-ae { border-top: 2px solid hsl(var(--aftereffects-accent)); background-color: #232323; color: white; }
+.tab-active-dr { border-bottom: 2px solid hsl(var(--davinci-accent)); background-color: #1a1a1a; color: white; }
+
+/* AE specific rows */
+.ae-timeline-row {
+  height: 20px;
+  border-bottom: 1px solid #2a2a2a;
+  position: relative;
+}
+
+/* Premiere transitions */
+.pr-transition {
+  background: linear-gradient(90deg, #d1d5db 0%, #9ca3af 50%, #d1d5db 100%);
+  border: 1px solid #6b7280;
+  opacity: 0.8;
+  z-index: 20;
+}
+.pr-transition:hover {
+  opacity: 1;
+  border-color: white;
+}
+
+/* Node grid pattern */
+.node-grid {
+  background-size: 20px 20px;
+  background-image: radial-gradient(circle, #333 1px, transparent 1px);
+}
