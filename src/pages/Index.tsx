@@ -745,7 +745,7 @@ const Index = () => {
 
               {/* VU Meter */}
               <div className="mb-3">
-                <VUMeter mode={activeMode} isPlaying={isPlaying} />
+                <VUMeter mode={activeMode} isPlaying={true} />
               </div>
 
               {/* Selected item */}
