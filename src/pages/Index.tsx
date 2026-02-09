@@ -985,10 +985,12 @@ const Index = () => {
                       {signalStatus === 'LIVE' ? (isPlaying ? t.playing : t.paused) : signalStatus === 'POOR' ? t.weak_signal : t.no_signal}
                     </div>
 
-                    <div className={`transition-all duration-500 relative w-full ${signalStatus === 'POOR' ? 'signal-pixelated' : ''} ${signalStatus === 'FROZEN' ? 'signal-frozen' : ''}`}>
-                      <h1 className={`font-black tracking-tighter text-foreground uppercase leading-[0.85] pointer-events-none transition-all duration-500 ease-out flex flex-col items-center ${
-                        monitorFormat === 'landscape' ? 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl gap-0' : 'text-[clamp(1.5rem,8vw,2.5rem)] gap-1 text-center'
-                      }`}>
+                    <div className={`transition-all duration-500 relative w-full ${signalStatus === 'POOR' ? 'signal-pixelated' : ''} ${signalStatus === 'FROZEN' ? 'signal-frozen' : ''}`}
+                      style={monitorFormat === 'portrait' ? { containerType: 'inline-size' } : undefined}>
+                      <h1 className={`font-black tracking-tighter text-foreground uppercase leading-[0.85] pointer-events-none transition-all duration-500 ease-out flex flex-col items-center w-full ${
+                        monitorFormat === 'landscape' ? 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl gap-0' : 'gap-1 text-center'
+                      }`}
+                        style={monitorFormat === 'portrait' ? { fontSize: 'min(2.2rem, 15cqi)' } : undefined}>
                         <span>Tania</span>
                         <span className={monitorFormat === 'portrait' ? 'text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500' : ''}>Salvatella</span>
                       </h1>
