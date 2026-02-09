@@ -11,9 +11,9 @@ interface WarningProps {
 export const AEWarning = ({ onOpenClassic, onClose, t }: WarningProps) => {
   const [showLog, setShowLog] = useState(false);
   return (
-     <div className="fixed inset-0 z-50 flex flex-col items-center justify-end pointer-events-none">
+     <div className="absolute bottom-0 left-0 right-0 z-40 flex flex-col items-center max-h-[60%] overflow-y-auto">
       {showLog && (
-        <div className="bg-[#1D1D1D] border border-[#333] w-[92%] max-w-[450px] rounded-md overflow-hidden animate-in zoom-in duration-200 mb-2 shadow-2xl border-orange-500/50 pointer-events-auto">
+        <div className="bg-[#1D1D1D] border border-[#333] w-[92%] max-w-[450px] rounded-md overflow-hidden animate-in zoom-in duration-200 mb-2 shadow-2xl border-orange-500/50">
           <div className="bg-[#1D1D1D] px-3 py-1.5 flex items-center justify-between border-b border-black shrink-0">
             <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest truncate">{t.ae_warning_title}</span>
             <button onClick={() => setShowLog(false)}><X size={14} className="text-muted-foreground hover:text-foreground" /></button>
@@ -32,7 +32,7 @@ export const AEWarning = ({ onOpenClassic, onClose, t }: WarningProps) => {
           </div>
         </div>
       )}
-      <div className="ae-warning-bar w-full flex items-center justify-between px-2 py-1 animate-in fade-in slide-in-from-bottom duration-300 shrink-0 overflow-hidden pointer-events-auto">
+      <div className="ae-warning-bar w-full flex items-center justify-between px-2 py-1 animate-in fade-in slide-in-from-bottom duration-300 shrink-0 overflow-hidden">
         <div className="flex items-center gap-2 min-w-0 flex-1">
           <div className="flex items-center gap-1 text-black shrink-0">
             <AlertTriangle size={12} fill="currentColor" />
