@@ -56,23 +56,65 @@ export const ExportModal = ({ onClose, lang }: ExportModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="bg-[#2D2D2D] w-full max-w-4xl max-h-[90vh] flex flex-col rounded-lg border border-black shadow-2xl overflow-hidden animate-in zoom-in duration-300">
-        <div className="bg-[#1D1D1D] px-4 py-2 flex items-center justify-between border-b border-black shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 bg-[#00005B] rounded flex items-center justify-center text-[10px] font-bold text-premiere">Me</div>
-            <span className="text-[11px] text-secondary-foreground font-bold uppercase tracking-widest truncate">Adobe Media Encoder - Queue</span>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-2 md:p-4">
+      <div className="bg-[#2D2D2D] w-full max-w-4xl max-h-[95vh] md:max-h-[90vh] flex flex-col rounded-lg border border-black shadow-2xl overflow-hidden animate-in zoom-in duration-300">
+        {/* Header */}
+        <div className="bg-[#1D1D1D] px-3 md:px-4 py-2 flex items-center justify-between border-b border-black shrink-0">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
+            <div className="w-5 h-5 bg-[#00005B] rounded flex items-center justify-center text-[10px] font-bold text-premiere shrink-0">Me</div>
+            <span className="text-[10px] md:text-[11px] text-secondary-foreground font-bold uppercase tracking-widest truncate">Media Encoder - Queue</span>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground"><X size={18} /></button>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground shrink-0 p-1"><X size={18} /></button>
         </div>
 
-        <div className="bg-[#232323] px-4 py-1.5 flex gap-4 border-b border-black text-[10px] text-muted-foreground font-medium shrink-0 overflow-x-auto">
+        {/* Tabs */}
+        <div className="bg-[#232323] px-3 md:px-4 py-1.5 flex gap-4 border-b border-black text-[10px] text-muted-foreground font-medium shrink-0">
           <span className="text-premiere cursor-pointer">Queue</span>
-          <span className="hover:text-secondary-foreground cursor-pointer">Watch Folders</span>
-          <div className="flex-1"></div>
+          <span className="hover:text-secondary-foreground cursor-pointer hidden md:inline">Watch Folders</span>
         </div>
 
-        <div className="flex-1 bg-[#1A1A1A] overflow-y-auto custom-scrollbar">
+        {/* MOBILE: Card list layout */}
+        <div className="flex-1 bg-[#1A1A1A] overflow-y-auto custom-scrollbar md:hidden">
+          <div className="p-2 space-y-1.5">
+            {exportQueue.map((link, idx) => {
+              const status = getStatus(idx, link.isDownload);
+              return (
+                <div key={idx}
+                  className={`rounded-md p-3 border border-black/30 active:scale-[0.98] transition-all cursor-pointer ${link.isDownload ? 'bg-blue-500/10 border-blue-500/20' : 'bg-[#262626]'}`}
+                  onClick={() => {
+                    if (link.isDownload && link.pdfLang) handleDownload(idx, link.pdfLang);
+                    else if (link.url) window.open(link.url, '_blank');
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 min-w-0">
+                      {downloadingIdx === idx ? <Loader2 size={16} className="animate-spin text-premiere shrink-0" /> : <span className="shrink-0">{link.icon}</span>}
+                      <div className="min-w-0">
+                        <span className={`text-xs font-bold block truncate ${link.isDownload ? 'text-premiere' : 'text-secondary-foreground'}`}>{link.label}</span>
+                        <span className="text-[9px] text-muted-foreground block">{link.preset}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`px-1.5 py-0.5 rounded-sm text-[8px] font-bold flex items-center gap-1 ${
+                        status === 'done' ? 'bg-emerald-900/40 text-emerald-400' :
+                        status === 'rendering' ? 'bg-davinci/20 text-davinci animate-pulse' :
+                        'bg-blue-900/40 text-premiere'
+                      }`}>
+                        {status === 'done' && <Check size={8} />}
+                        {status === 'rendering' && <Loader2 size={8} className="animate-spin" />}
+                        {getStatusLabel(status)}
+                      </span>
+                      {link.isDownload ? <Download size={12} className="text-premiere" /> : link.url ? <ExternalLink size={12} className="text-premiere" /> : null}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* DESKTOP: Table layout */}
+        <div className="flex-1 bg-[#1A1A1A] overflow-y-auto custom-scrollbar hidden md:block">
           <table className="w-full text-left border-collapse min-w-[600px]">
             <thead className="sticky top-0 bg-[#2D2D2D] text-[9px] uppercase text-muted-foreground font-bold border-b border-black">
               <tr>
@@ -89,11 +131,8 @@ export const ExportModal = ({ onClose, lang }: ExportModalProps) => {
                   <tr key={idx}
                     className={`border-b border-black/20 hover:bg-white/5 group transition-colors cursor-pointer ${link.isDownload ? 'bg-blue-500/5' : ''}`}
                     onClick={() => {
-                      if (link.isDownload && link.pdfLang) {
-                        handleDownload(idx, link.pdfLang);
-                      } else if (link.url) {
-                        window.open(link.url, '_blank');
-                      }
+                      if (link.isDownload && link.pdfLang) handleDownload(idx, link.pdfLang);
+                      else if (link.url) window.open(link.url, '_blank');
                     }}
                   >
                     <td className="px-4 py-3 flex items-center gap-3">
@@ -134,15 +173,16 @@ export const ExportModal = ({ onClose, lang }: ExportModalProps) => {
           </table>
         </div>
 
-        <div className="bg-[#1D1D1D] p-6 border-t border-black flex flex-col md:flex-row items-center justify-between gap-4 shrink-0">
-          <div className="flex gap-4 md:gap-10">
+        {/* Footer */}
+        <div className="bg-[#1D1D1D] p-3 md:p-6 border-t border-black flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4 shrink-0">
+          <div className="flex gap-4 md:gap-10 w-full md:w-auto justify-between md:justify-start">
             <div className="hidden md:block">
               <p className="text-[9px] text-muted-foreground uppercase font-bold mb-1">Total Duration</p>
               <p className="text-xl text-foreground font-mono">00:15:20:00</p>
             </div>
             <div>
-              <p className="text-[9px] text-muted-foreground uppercase font-bold mb-1">User Identification</p>
-              <p className="text-sm text-secondary-foreground">Tania Salvatella</p>
+              <p className="text-[8px] md:text-[9px] text-muted-foreground uppercase font-bold mb-0.5">User</p>
+              <p className="text-xs md:text-sm text-secondary-foreground">Tania Salvatella</p>
             </div>
           </div>
           <button
@@ -150,9 +190,9 @@ export const ExportModal = ({ onClose, lang }: ExportModalProps) => {
               handleDownload(0, 'es');
               setTimeout(() => handleDownload(1, 'en'), 1500);
             }}
-            className="w-full md:w-auto bg-premiere hover:brightness-110 text-white px-8 py-3 rounded font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all shadow-lg active:scale-95"
+            className="w-full md:w-auto bg-premiere hover:brightness-110 text-white px-6 md:px-8 py-2.5 md:py-3 rounded font-black text-xs md:text-sm uppercase tracking-widest flex items-center justify-center gap-2 md:gap-3 transition-all shadow-lg active:scale-95"
           >
-            <Play size={18} fill="currentColor" /> {t.startProcessing}
+            <Play size={16} fill="currentColor" /> {t.startProcessing}
           </button>
         </div>
       </div>
