@@ -11,21 +11,21 @@ interface WarningProps {
 export const AEWarning = ({ onOpenClassic, onClose, t }: WarningProps) => {
   const [showLog, setShowLog] = useState(false);
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-40 flex flex-col items-center">
+     <div className="absolute bottom-0 left-0 right-0 z-40 flex flex-col items-center max-h-[60%] overflow-y-auto">
       {showLog && (
-        <div className="bg-[#1D1D1D] border border-[#333] w-[90%] md:w-[450px] rounded-md overflow-hidden animate-in zoom-in duration-200 mb-4 shadow-2xl border-orange-500/50">
-          <div className="bg-[#1D1D1D] px-3 py-2 flex items-center justify-between border-b border-black">
-            <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{t.ae_warning_title}</span>
+        <div className="bg-[#1D1D1D] border border-[#333] w-[92%] max-w-[450px] rounded-md overflow-hidden animate-in zoom-in duration-200 mb-2 shadow-2xl border-orange-500/50">
+          <div className="bg-[#1D1D1D] px-3 py-1.5 flex items-center justify-between border-b border-black shrink-0">
+            <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest truncate">{t.ae_warning_title}</span>
             <button onClick={() => setShowLog(false)}><X size={14} className="text-muted-foreground hover:text-foreground" /></button>
           </div>
-          <div className="p-6 flex gap-4 bg-[#232323]">
-            <div className="text-orange-500"><AlertTriangle size={32} /></div>
-            <div className="flex-1 text-left">
-              <p className="text-secondary-foreground text-xs mb-4">{t.ae_warning_desc}</p>
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setShowLog(false)} className="px-4 py-1.5 text-[10px] bg-[#333] text-secondary-foreground hover:bg-[#444] rounded-sm">{t.cancel}</button>
-                <button onClick={onOpenClassic} className="px-4 py-1.5 text-[10px] bg-aftereffects text-black font-bold rounded-sm hover:brightness-110 flex items-center gap-2">
-                  <Download size={12} /> {t.download_pdf}
+          <div className="p-4 flex gap-3 bg-[#232323]">
+            <div className="text-orange-500 shrink-0"><AlertTriangle size={24} /></div>
+            <div className="flex-1 text-left min-w-0">
+              <p className="text-secondary-foreground text-[11px] mb-3 leading-relaxed">{t.ae_warning_desc}</p>
+              <div className="flex justify-end gap-2 flex-wrap">
+                <button onClick={() => setShowLog(false)} className="px-3 py-1.5 text-[10px] bg-[#333] text-secondary-foreground hover:bg-[#444] rounded-sm">{t.cancel}</button>
+                <button onClick={onOpenClassic} className="px-3 py-1.5 text-[10px] bg-aftereffects text-black font-bold rounded-sm hover:brightness-110 flex items-center gap-1.5">
+                  <Download size={11} /> {t.download_pdf}
                 </button>
               </div>
             </div>

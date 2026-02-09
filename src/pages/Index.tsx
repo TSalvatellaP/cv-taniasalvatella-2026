@@ -978,16 +978,16 @@ const Index = () => {
                     </div>
                   </div>
                 ) : (
-                  <>
-                    <div className={`inline-block px-4 py-1 rounded text-[8px] md:text-[10px] font-black text-foreground uppercase tracking-[0.3em] shadow-lg transition-all duration-500 mb-8 ${
+                  <div className="flex flex-col items-center justify-center h-full w-full px-4 overflow-hidden">
+                    <div className={`inline-block px-3 py-1 rounded text-[8px] md:text-[10px] font-black text-foreground uppercase tracking-[0.2em] shadow-lg transition-all duration-500 ${
                       signalStatus === 'LIVE' ? (isPlaying ? (activeMode === 'color' ? 'bg-davinci animate-pulse' : 'bg-emerald-600 animate-pulse') : 'bg-premiere/30 border border-premiere/20') :
-                      (signalStatus === 'POOR' ? 'bg-yellow-600/80' : 'bg-red-600/80')} ${monitorFormat === 'portrait' ? 'scale-75 mb-4' : ''}`}>
+                      (signalStatus === 'POOR' ? 'bg-yellow-600/80' : 'bg-red-600/80')} ${monitorFormat === 'portrait' ? 'mb-3' : 'mb-6'}`}>
                       {signalStatus === 'LIVE' ? (isPlaying ? t.playing : t.paused) : signalStatus === 'POOR' ? t.weak_signal : t.no_signal}
                     </div>
 
                     <div className={`transition-all duration-500 relative ${signalStatus === 'POOR' ? 'signal-pixelated' : ''} ${signalStatus === 'FROZEN' ? 'signal-frozen' : ''}`}>
-                      <h1 className={`font-black tracking-tighter text-foreground uppercase leading-[0.85] pointer-events-none transition-all duration-500 ease-out ${
-                        monitorFormat === 'landscape' ? 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl flex flex-col items-center gap-0' : 'text-4xl sm:text-5xl flex flex-col items-center gap-2 text-center'
+                      <h1 className={`font-black tracking-tighter text-foreground uppercase leading-[0.85] pointer-events-none transition-all duration-500 ease-out flex flex-col items-center ${
+                        monitorFormat === 'landscape' ? 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl gap-0' : 'text-3xl sm:text-4xl gap-1 text-center'
                       }`}>
                         <span>Tania</span>
                         <span className={monitorFormat === 'portrait' ? 'text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500' : ''}>Salvatella</span>
@@ -995,11 +995,11 @@ const Index = () => {
                       {signalStatus === 'POOR' && <div className="absolute inset-0 bg-gradient-to-t from-transparent via-green-500/20 to-transparent mix-blend-color-dodge pointer-events-none" style={{ backgroundSize: '100% 4px' }}></div>}
                     </div>
 
-                    <div className={`mt-8 transition-all duration-500 ${monitorFormat === 'portrait' ? 'px-4 text-center' : ''}`}>
-                      <p className={`${monitorFormat === 'portrait' ? 'text-xs tracking-widest' : 'text-[10px] md:text-sm lg:text-lg tracking-[0.4em]'} text-muted-foreground uppercase font-light italic pointer-events-none transition-all duration-300 ${signalStatus === 'FROZEN' ? 'opacity-40 blur-[2px]' : ''}`}>{t.job_title}</p>
+                    <div className={`transition-all duration-500 text-center ${monitorFormat === 'portrait' ? 'mt-3 px-2' : 'mt-6'}`}>
+                      <p className={`${monitorFormat === 'portrait' ? 'text-[10px] tracking-[0.15em]' : 'text-[10px] md:text-sm lg:text-lg tracking-[0.4em]'} text-muted-foreground uppercase font-light italic pointer-events-none transition-all duration-300 ${signalStatus === 'FROZEN' ? 'opacity-40 blur-[2px]' : ''}`}>{t.job_title}</p>
                     </div>
-                    <div className={`h-16 flex items-center justify-center transition-all duration-500 ${monitorFormat === 'portrait' ? 'mt-4 px-4 text-center' : 'mt-4'}`}>
-                      <p className={`${monitorFormat === 'portrait' ? 'text-xs' : 'text-xs md:text-lg lg:text-xl'} text-muted-foreground max-w-lg italic font-serif transition-all duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}>"{t.phrases[phraseIndex]}"</p>
+                    <div className={`flex items-center justify-center transition-all duration-500 text-center ${monitorFormat === 'portrait' ? 'mt-3 px-2 min-h-[2.5rem]' : 'mt-4 h-16'}`}>
+                      <p className={`${monitorFormat === 'portrait' ? 'text-[11px]' : 'text-xs md:text-lg lg:text-xl'} text-muted-foreground max-w-lg italic font-serif transition-all duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}>"{t.phrases[phraseIndex]}"</p>
                     </div>
 
                     {signalStatus === 'FROZEN' && (
@@ -1010,7 +1010,7 @@ const Index = () => {
                         </div>
                       </div>
                     )}
-                  </>
+                  </div>
                 )}
               </div>
 
