@@ -410,7 +410,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:15:00",
         type: "video",
         fullHistory: [],
-        url: "https://youtu.be/7M8TEeqD4Wc?si=Jh7_5hqmkWQAdxeV",
+        url: "https://www.youtube.com/watch?v=7M8TEeqD4Wc&t=1s",
       },
       {
         id: "vid3",
@@ -424,7 +424,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:08:45",
         type: "video",
         fullHistory: [],
-        url: "https://www.instagram.com/gournay_es/",
+        url: "https://www.instagram.com/gournay_es?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
       },
       {
         id: "vid4",
@@ -737,7 +737,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:15:00",
         type: "video",
         fullHistory: [],
-        url: "https://youtu.be/7M8TEeqD4Wc?si=Jh7_5hqmkWQAdxeV",
+        url: "https://www.youtube.com/watch?v=7M8TEeqD4Wc&t=1s",
       },
       {
         id: "vid3",
@@ -751,7 +751,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:08:45",
         type: "video",
         fullHistory: [],
-        url: "https://www.instagram.com/gournay_es/",
+        url: "https://www.instagram.com/gournay_es?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
       },
       {
         id: "vid4",
