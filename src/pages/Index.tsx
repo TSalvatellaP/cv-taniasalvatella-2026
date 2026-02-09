@@ -462,81 +462,206 @@ const Index = () => {
 
           {/* TAB: TIMELINE */}
           {mobileTab === 'timeline' && (
-            <div className="absolute inset-0 flex flex-col p-2 overflow-hidden"
+            <div className="absolute inset-0 flex flex-col overflow-hidden"
               style={{ backgroundColor: activeMode === 'color' ? '#181818' : activeMode === 'effects' ? '#161616' : '#1F1F1F' }}>
-              <div className="px-2 py-1 flex justify-between text-[10px] text-gray-400 border-b border-black mb-2">
-                <span>00:00:00:00</span>
-                <span style={{ color: headerInfo.accent }}>{getTimecode(playheadPos)}</span>
-                <span>00:15:20:00</span>
-              </div>
-              <div className="flex-1 relative overflow-y-auto bg-[#1A1A1A] border border-white/5 rounded">
-                <div className="space-y-1 p-1">
-                  {/* V1 — Artistic projects (first half) */}
-                  <div className="h-14 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">V1</div>
-                    <div className="flex-1 ml-7 flex overflow-hidden h-full">
-                      {t.art_data.slice(0, 3).map((art, idx) => (
-                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
-                          style={{ backgroundColor: `${art.color || art.labelPr}25` }}
-                          onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
-                          <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
-                          <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
-                          <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+
+              {/* DaVinci Resolve style timeline */}
+              {activeMode === 'color' ? (
+                <>
+                  {/* Timecode top-left */}
+                  <div className="px-3 py-1.5 flex items-center justify-between border-b border-black/50 shrink-0" style={{ backgroundColor: '#1a1a1a' }}>
+                    <span className="text-[13px] font-mono font-bold text-white tracking-wider">{getTimecode(playheadPos)}</span>
+                    <div className="flex items-center gap-3 text-[9px] text-gray-500 font-mono">
+                      <span>01:00:00:00</span>
+                      <span>01:15:04:00</span>
+                    </div>
+                  </div>
+                  {/* Ruler */}
+                  <div className="h-5 border-b border-[#333] shrink-0 relative" style={{ backgroundColor: '#1e1e1e' }}>
+                    <div className="absolute inset-0 flex items-end px-1">
+                      {Array.from({ length: 20 }).map((_, i) => (
+                        <div key={i} className="flex-1 flex flex-col items-center">
+                          <div className="w-[1px] bg-gray-600" style={{ height: i % 5 === 0 ? 10 : 5 }} />
                         </div>
                       ))}
                     </div>
                   </div>
-                  {/* V2 — Artistic projects (second half) */}
-                  <div className="h-14 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">V2</div>
-                    <div className="flex-1 ml-7 flex overflow-hidden h-full">
-                      {t.art_data.slice(3).map((art, idx) => (
-                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
-                          style={{ backgroundColor: `${art.color || art.labelPr}25` }}
-                          onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
-                          <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
-                          <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
-                          <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+                  <div className="flex-1 relative overflow-y-auto" style={{ backgroundColor: '#1a1a1a' }}>
+                    <div className="flex flex-col">
+                      {/* V2 — Video 2 */}
+                      <div className="flex border-b border-[#2a2a2a]" style={{ height: 44 }}>
+                        <div className="w-[90px] shrink-0 flex flex-col justify-center border-r border-[#2a2a2a] px-1.5" style={{ backgroundColor: '#1e1e1e' }}>
+                          <div className="flex items-center gap-1">
+                            <span className="text-[9px] font-bold text-gray-400">V2</span>
+                            <span className="text-[8px] text-gray-500">Video 2</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Lock size={8} className="text-gray-600" />
+                            <Eye size={8} className="text-gray-600" />
+                            <Monitor size={8} className="text-gray-600" />
+                          </div>
                         </div>
-                      ))}
+                        <div className="flex-1 relative" style={{ backgroundColor: '#1f1f1f' }}>
+                          {/* Empty track */}
+                        </div>
+                      </div>
+                      {/* V1 — Video 1 with clips */}
+                      <div className="flex border-b border-[#2a2a2a]" style={{ height: 52 }}>
+                        <div className="w-[90px] shrink-0 flex flex-col justify-center border-r border-[#2a2a2a] px-1.5" style={{ backgroundColor: '#1e1e1e' }}>
+                          <div className="flex items-center gap-1">
+                            <span className="text-[9px] font-bold text-white px-1 rounded" style={{ backgroundColor: '#c03030' }}>V1</span>
+                            <span className="text-[8px] text-gray-400">Video 1</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Lock size={8} className="text-gray-600" />
+                            <Eye size={8} className="text-gray-500" />
+                            <Monitor size={8} className="text-gray-500" />
+                          </div>
+                        </div>
+                        <div className="flex-1 relative flex items-stretch overflow-hidden">
+                          {t.art_data.slice(0, 4).map((art, idx) => (
+                            <div key={idx} className="flex-1 relative cursor-pointer active:brightness-125 transition-all min-w-0 border-r border-[#111]"
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                              {/* Thumbnail strip at top */}
+                              <div className="absolute inset-0 bg-gradient-to-b from-[#3a5a7a] to-[#2a4060]" />
+                              {/* Vertical bars (thumbnail markers) */}
+                              <div className="absolute left-0 top-0 bottom-0 flex gap-[2px] opacity-40">
+                                {Array.from({ length: 6 }).map((_, bi) => (
+                                  <div key={bi} className="w-[3px] h-full" style={{ backgroundColor: '#5a8ab5' }} />
+                                ))}
+                              </div>
+                              {/* Clip label */}
+                              <div className="absolute bottom-0 left-0 right-0 px-1 py-0.5 bg-[#2a5080]/90 flex items-center gap-1">
+                                <Anchor size={7} className="text-white/60 shrink-0" />
+                                <span className="text-[6px] text-white/80 font-medium truncate">{art.title}.mp4</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      {/* A1 — Audio 1 (green clips) */}
+                      <div className="flex border-b border-[#2a2a2a]" style={{ height: 40 }}>
+                        <div className="w-[90px] shrink-0 flex flex-col justify-center border-r border-[#2a2a2a] px-1.5" style={{ backgroundColor: '#1e1e1e' }}>
+                          <div className="flex items-center gap-1">
+                            <span className="text-[9px] font-bold text-white px-1 rounded" style={{ backgroundColor: '#2a8a2a' }}>A1</span>
+                            <div className="flex items-center gap-0.5">
+                              <Lock size={7} className="text-gray-600" />
+                              <Volume2 size={7} className="text-gray-500" />
+                              <span className="text-[7px] font-bold text-gray-500">S</span>
+                              <span className="text-[7px] font-bold text-gray-500">M</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1 mt-0.5">
+                            <span className="text-[7px] text-gray-600 font-mono">2.0</span>
+                          </div>
+                        </div>
+                        <div className="flex-1 relative flex items-stretch overflow-hidden">
+                          <div className="flex-1 relative" style={{ backgroundColor: '#1a3a1a' }}>
+                            <AudioWaveform mode={activeMode} isPlaying={isPlaying} playheadPos={playheadPos} barCount={60} className="w-full h-full" />
+                            <div className="absolute bottom-0 left-0 right-0 px-1 py-0.5 bg-[#2a7a2a]/80 flex items-center gap-1">
+                              <Anchor size={7} className="text-white/60 shrink-0" />
+                              <span className="text-[6px] text-white/80 truncate">audio_master.mp4</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* A2 — Audio 2 */}
+                      <div className="flex border-b border-[#2a2a2a]" style={{ height: 32 }}>
+                        <div className="w-[90px] shrink-0 flex flex-col justify-center border-r border-[#2a2a2a] px-1.5" style={{ backgroundColor: '#1e1e1e' }}>
+                          <div className="flex items-center gap-1">
+                            <span className="text-[8px] font-bold text-gray-500">A2</span>
+                            <div className="flex items-center gap-0.5">
+                              <Lock size={7} className="text-gray-600" />
+                              <Volume2 size={7} className="text-gray-600" />
+                              <span className="text-[7px] font-bold text-gray-600">S</span>
+                              <span className="text-[7px] font-bold text-gray-600">M</span>
+                            </div>
+                          </div>
+                          <span className="text-[7px] text-gray-600 font-mono">1.0</span>
+                        </div>
+                        <div className="flex-1 relative" style={{ backgroundColor: '#1f1f1f' }}>
+                          {/* Empty audio track */}
+                        </div>
+                      </div>
+                    </div>
+                    {/* Playhead — red DaVinci style */}
+                    <div className="absolute top-0 bottom-0 w-[2px] z-30" style={{ left: `${playheadPos}%`, backgroundColor: '#e03030' }}>
+                      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-[#e03030]" />
                     </div>
                   </div>
-                  {/* C1 — Captions / Education */}
-                  <div className="h-8 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">C1</div>
-                    <div className="flex-1 ml-7 flex overflow-hidden">
-                      {t.edu_data.map((edu, idx) => (
-                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative bg-emerald-800/40 min-w-0">
-                          <span className="absolute top-0.5 left-0.5 right-0.5 text-[5px] text-emerald-200 font-bold truncate">{edu.label}</span>
-                        </div>
-                      ))}
-                    </div>
+                </>
+              ) : (
+                /* Premiere / After Effects timeline (original) */
+                <div className="flex-1 flex flex-col p-2 overflow-hidden">
+                  <div className="px-2 py-1 flex justify-between text-[10px] text-gray-400 border-b border-black mb-2">
+                    <span>00:00:00:00</span>
+                    <span style={{ color: headerInfo.accent }}>{getTimecode(playheadPos)}</span>
+                    <span>00:15:20:00</span>
                   </div>
-                  {/* A1 — Adaptive animated audio waveform */}
-                  <div className="h-16 relative flex items-center overflow-hidden rounded-sm mt-1"
-                    style={{ backgroundColor: activeMode === 'color' ? '#1a1408' : activeMode === 'effects' ? '#0f0f1e' : '#262626' }}>
-                    <div className="absolute left-0 w-7 h-full border-r border-black flex items-center justify-center text-[8px] font-bold z-10 shrink-0"
-                      style={{
-                        backgroundColor: activeMode === 'color' ? '#2a2210' : activeMode === 'effects' ? '#1a1a2e' : '#333',
-                        color: activeMode === 'color' ? '#fbbf24' : activeMode === 'effects' ? '#93c5fd' : '#4ade80'
-                      }}>A1</div>
-                    <div className="flex-1 ml-7 h-full">
-                      <AudioWaveform
-                        mode={activeMode}
-                        isPlaying={isPlaying}
-                        playheadPos={playheadPos}
-                        barCount={80}
-                        className="w-full h-full"
-                      />
+                  <div className="flex-1 relative overflow-y-auto bg-[#1A1A1A] border border-white/5 rounded">
+                    <div className="space-y-1 p-1">
+                      {/* V1 */}
+                      <div className="h-14 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                        <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">V1</div>
+                        <div className="flex-1 ml-7 flex overflow-hidden h-full">
+                          {t.art_data.slice(0, 3).map((art, idx) => (
+                            <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
+                              style={{ backgroundColor: `${art.color || art.labelPr}25` }}
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                              <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
+                              <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
+                              <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      {/* V2 */}
+                      <div className="h-14 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                        <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">V2</div>
+                        <div className="flex-1 ml-7 flex overflow-hidden h-full">
+                          {t.art_data.slice(3).map((art, idx) => (
+                            <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
+                              style={{ backgroundColor: `${art.color || art.labelPr}25` }}
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                              <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
+                              <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
+                              <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      {/* C1 */}
+                      <div className="h-8 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                        <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">C1</div>
+                        <div className="flex-1 ml-7 flex overflow-hidden">
+                          {t.edu_data.map((edu, idx) => (
+                            <div key={idx} className="flex-1 border-r border-black/50 h-full relative bg-emerald-800/40 min-w-0">
+                              <span className="absolute top-0.5 left-0.5 right-0.5 text-[5px] text-emerald-200 font-bold truncate">{edu.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      {/* A1 */}
+                      <div className="h-16 relative flex items-center overflow-hidden rounded-sm mt-1"
+                        style={{ backgroundColor: activeMode === 'effects' ? '#0f0f1e' : '#262626' }}>
+                        <div className="absolute left-0 w-7 h-full border-r border-black flex items-center justify-center text-[8px] font-bold z-10 shrink-0"
+                          style={{
+                            backgroundColor: activeMode === 'effects' ? '#1a1a2e' : '#333',
+                            color: activeMode === 'effects' ? '#93c5fd' : '#4ade80'
+                          }}>A1</div>
+                        <div className="flex-1 ml-7 h-full">
+                          <AudioWaveform mode={activeMode} isPlaying={isPlaying} playheadPos={playheadPos} barCount={80} className="w-full h-full" />
+                        </div>
+                      </div>
+                    </div>
+                    {/* Playhead */}
+                    <div className="absolute top-0 bottom-0 w-[2px] z-30" style={{ left: `${playheadPos}%`, backgroundColor: activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }}>
+                      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px]"
+                        style={{ borderTopColor: activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }} />
                     </div>
                   </div>
                 </div>
-                {/* Playhead — mode-adaptive color */}
-                <div className="absolute top-0 bottom-0 w-[2px] z-30" style={{ left: `${playheadPos}%`, backgroundColor: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }}>
-                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px]"
-                    style={{ borderTopColor: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }} />
-                </div>
-              </div>
+              )}
             </div>
           )}
 
