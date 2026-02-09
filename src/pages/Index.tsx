@@ -19,6 +19,7 @@ import { ExportModal } from '@/components/cv/ExportModal';
 import { AEWarning, PRWarning, DRWarning } from '@/components/cv/Warnings';
 import { ExperienceDetailMonitor } from '@/components/cv/ExperienceDetailMonitor';
 import { AudioWaveform, DesktopAudioWaveformSVG } from '@/components/cv/AudioWaveform';
+import { VUMeter } from '@/components/cv/VUMeter';
 
 type Mode = 'editing' | 'effects' | 'color';
 
@@ -541,49 +542,112 @@ const Index = () => {
 
           {/* TAB: INSPECTOR */}
           {mobileTab === 'inspector' && (
-            <div className="absolute inset-0 bg-[#232323] p-4 overflow-y-auto custom-scrollbar">
-              <div className="mb-4">
-                <h3 className="text-xs font-bold text-gray-400 uppercase mb-2">{t.selected_item}</h3>
-                <div className="bg-[#1A1A1A] p-3 rounded border border-white/5">
+            <div className="absolute inset-0 p-3 overflow-y-auto custom-scrollbar"
+              style={{
+                backgroundColor: activeMode === 'color' ? '#141210' : activeMode === 'effects' ? '#141418' : '#232323',
+              }}>
+
+              {/* VU Meter */}
+              <div className="mb-3">
+                <VUMeter mode={activeMode} isPlaying={isPlaying} />
+              </div>
+
+              {/* Selected item */}
+              <div className="mb-3">
+                <h3 className="text-[9px] font-bold uppercase mb-1.5 tracking-widest"
+                  style={{ color: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#3EA6F2' }}>
+                  {t.selected_item}
+                </h3>
+                <div className="p-2.5 rounded border"
+                  style={{
+                    backgroundColor: activeMode === 'color' ? '#1a1408' : activeMode === 'effects' ? '#12121f' : '#1A1A1A',
+                    borderColor: activeMode === 'color' ? '#f39c1230' : activeMode === 'effects' ? '#D8A5FA20' : '#ffffff10',
+                  }}>
                   <span className="text-sm font-bold text-white block">{selectedExp ? selectedExp.title : t.no_clip}</span>
                   <span className="text-xs text-gray-500">{selectedExp ? selectedExp.company : t.select_hint}</span>
                 </div>
               </div>
-              <div className="mb-4">
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase mb-3 text-blue-400"><Code size={12} /> {t.techPipeline}</div>
-                <div className="space-y-1.5">
+
+              {/* Tech Pipeline */}
+              <div className="mb-3">
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase mb-2 tracking-widest"
+                  style={{ color: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#3EA6F2' }}>
+                  <Code size={11} /> {t.techPipeline}
+                </div>
+                <div className="space-y-1">
                   {t.techSkills.map(s => (
-                    <div key={s.n} className="bg-black/30 p-2 rounded border border-white/5 text-[9px] text-gray-400 flex justify-between items-center">
+                    <div key={s.n} className="p-1.5 rounded border text-[9px] text-gray-400 flex justify-between items-center"
+                      style={{
+                        backgroundColor: activeMode === 'color' ? '#1a140810' : activeMode === 'effects' ? '#12121f' : '#00000030',
+                        borderColor: activeMode === 'color' ? '#f39c1215' : activeMode === 'effects' ? '#D8A5FA15' : '#ffffff08',
+                      }}>
                       <span>{s.n}</span>
-                      <span className="text-[7px] text-blue-500 font-bold px-1.5 border border-blue-500/20 rounded-full">{s.v}</span>
+                      <span className="text-[7px] font-bold px-1.5 border rounded-full"
+                        style={{
+                          color: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#3EA6F2',
+                          borderColor: activeMode === 'color' ? '#f39c1230' : activeMode === 'effects' ? '#D8A5FA30' : '#3EA6F230',
+                        }}>{s.v}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="mb-4">
-                <div className="flex items-center gap-2 text-[10px] text-purple-300 font-black uppercase mb-3"><Sparkles size={12} /> {t.genAiEngine}</div>
+
+              {/* GenAI */}
+              <div className="mb-3">
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase mb-2 tracking-widest"
+                  style={{ color: activeMode === 'color' ? '#fb923c' : activeMode === 'effects' ? '#c084fc' : '#a78bfa' }}>
+                  <Sparkles size={11} /> {t.genAiEngine}
+                </div>
                 <div className="grid grid-cols-2 gap-1">
                   {t.genAiModels.map(item => (
-                    <div key={item} className="bg-purple-500/10 border border-purple-500/20 text-[8px] text-center py-1.5 text-purple-300 rounded font-bold uppercase tracking-tighter">{item}</div>
+                    <div key={item} className="text-[8px] text-center py-1.5 rounded font-bold uppercase tracking-tighter border"
+                      style={{
+                        backgroundColor: activeMode === 'color' ? '#f39c1210' : activeMode === 'effects' ? '#D8A5FA10' : '#a78bfa10',
+                        borderColor: activeMode === 'color' ? '#f39c1220' : activeMode === 'effects' ? '#D8A5FA20' : '#a78bfa20',
+                        color: activeMode === 'color' ? '#fb923c' : activeMode === 'effects' ? '#c084fc' : '#a78bfa',
+                      }}>{item}</div>
                   ))}
                 </div>
               </div>
-              <div className="mb-4">
-                <div className="flex items-center gap-2 text-[10px] text-green-400 font-black uppercase mb-3"><Network size={12} /> {t.broadcastSys}</div>
+
+              {/* Broadcast */}
+              <div className="mb-3">
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase mb-2 tracking-widest"
+                  style={{ color: activeMode === 'color' ? '#fbbf24' : activeMode === 'effects' ? '#34d399' : '#10b981' }}>
+                  <Network size={11} /> {t.broadcastSys}
+                </div>
                 <div className="flex flex-wrap gap-1">
                   {t.broadcastSystemsList.map(item => (
-                    <div key={item} className="bg-green-500/10 border border-green-500/20 text-[8px] py-1 px-2 text-green-300 rounded font-bold uppercase tracking-tight">{item}</div>
+                    <div key={item} className="text-[8px] py-1 px-2 rounded font-bold uppercase tracking-tight border"
+                      style={{
+                        backgroundColor: activeMode === 'color' ? '#fbbf2410' : activeMode === 'effects' ? '#34d39910' : '#10b98110',
+                        borderColor: activeMode === 'color' ? '#fbbf2420' : activeMode === 'effects' ? '#34d39920' : '#10b98120',
+                        color: activeMode === 'color' ? '#fbbf24' : activeMode === 'effects' ? '#34d399' : '#10b981',
+                      }}>{item}</div>
                   ))}
                 </div>
               </div>
-              <div className="mb-4">
-                <h3 className="text-xs font-bold text-gray-500 uppercase mb-2">{t.tech_specs}</h3>
+
+              {/* Tech specs */}
+              <div className="mb-3">
+                <h3 className="text-[9px] font-bold uppercase mb-1.5 tracking-widest"
+                  style={{ color: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#666' }}>
+                  {t.tech_specs}
+                </h3>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-[#1A1A1A] p-2 rounded text-center">
+                  <div className="p-2 rounded text-center border"
+                    style={{
+                      backgroundColor: activeMode === 'color' ? '#1a1408' : activeMode === 'effects' ? '#12121f' : '#1A1A1A',
+                      borderColor: activeMode === 'color' ? '#f39c1215' : activeMode === 'effects' ? '#D8A5FA15' : '#ffffff08',
+                    }}>
                     <span className="text-[9px] text-gray-500 block">{t.frame_rate}</span>
                     <span className="text-xs font-mono text-white">23.976</span>
                   </div>
-                  <div className="bg-[#1A1A1A] p-2 rounded text-center">
+                  <div className="p-2 rounded text-center border"
+                    style={{
+                      backgroundColor: activeMode === 'color' ? '#1a1408' : activeMode === 'effects' ? '#12121f' : '#1A1A1A',
+                      borderColor: activeMode === 'color' ? '#f39c1215' : activeMode === 'effects' ? '#D8A5FA15' : '#ffffff08',
+                    }}>
                     <span className="text-[9px] text-gray-500 block">{t.resolution}</span>
                     <span className="text-xs font-mono text-white">3840x2160</span>
                   </div>
