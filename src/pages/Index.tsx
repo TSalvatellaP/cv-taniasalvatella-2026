@@ -590,8 +590,70 @@ const Index = () => {
                     </div>
                   </div>
                 </>
+              ) : activeMode === 'effects' ? (
+                /* After Effects layer-based timeline */
+                <div className="flex-1 flex flex-col overflow-hidden" style={{ backgroundColor: '#232323' }}>
+                  {/* AE top bar: timecode + comp tabs */}
+                  <div className="flex items-center justify-between px-2 py-1 border-b border-[#1a1a1a] shrink-0" style={{ backgroundColor: '#2a2a2a' }}>
+                    <span className="text-[12px] font-mono font-bold" style={{ color: '#D8A5FA' }}>{getTimecode(playheadPos)}</span>
+                    <span className="text-[8px] text-gray-500 font-mono">00143 (23.00 fps)</span>
+                  </div>
+                  {/* AE column headers */}
+                  <div className="flex items-center h-5 border-b border-[#1a1a1a] shrink-0 text-[7px] text-gray-500 font-bold" style={{ backgroundColor: '#2d2d2d' }}>
+                    <div className="w-[45%] flex items-center gap-1 px-1">
+                      <span className="w-4 text-center">#</span>
+                      <span>Layer Name</span>
+                    </div>
+                    <div className="w-[15%] flex items-center justify-center gap-1">
+                      <Sparkles size={7} /><span>fx</span>
+                    </div>
+                    <div className="w-[40%] text-center">Parent & Link</div>
+                  </div>
+                  {/* AE layers list + bars */}
+                  <div className="flex-1 overflow-y-auto">
+                    {(() => {
+                      const aeColors = ['#cc3333', '#cc33cc', '#3366cc', '#3366cc', '#3399cc', '#336633', '#33cc33', '#cc6633', '#cccc33', '#cc3399', '#6633cc', '#33cc66', '#336699'];
+                      const allLayers = [
+                        ...t.exp_data.map((exp, i) => ({ name: exp.title, color: aeColors[i % aeColors.length], type: 'T', parent: 'None', id: exp.id })),
+                        ...t.art_data.slice(0, 4).map((art, i) => ({ name: art.title, color: aeColors[(i + 5) % aeColors.length], type: '★', parent: 'None', id: art.id })),
+                      ];
+                      return allLayers.map((layer, idx) => (
+                        <div key={layer.id} className="flex border-b border-[#1e1e1e] ae-row" style={{ height: 22 }}>
+                          {/* Left: layer info */}
+                          <div className="w-[45%] flex items-center gap-1 px-1 min-w-0" style={{ backgroundColor: '#232323' }}>
+                            <Eye size={7} className="text-gray-500 shrink-0" />
+                            <span className="text-[8px] font-bold text-gray-500 w-3 text-right shrink-0">{idx + 1}</span>
+                            <div className="w-2.5 h-2.5 rounded-[2px] shrink-0" style={{ backgroundColor: layer.color }} />
+                            <span className="text-[7px] text-gray-400 shrink-0">{layer.type}</span>
+                            <span className="text-[8px] text-gray-300 truncate">{layer.name}</span>
+                          </div>
+                          {/* Center: icons */}
+                          <div className="w-[15%] flex items-center justify-center gap-1 border-l border-[#1a1a1a]" style={{ backgroundColor: '#232323' }}>
+                            <Sparkles size={6} className="text-gray-600" />
+                            <span className="text-[7px] text-gray-600">/</span>
+                            <Wand2 size={6} className="text-gray-600" />
+                          </div>
+                          {/* Right: colored bar */}
+                          <div className="w-[40%] relative border-l border-[#1a1a1a]" style={{ backgroundColor: '#1a1a1a' }}>
+                            <div className="absolute top-[3px] bottom-[3px] rounded-[1px]"
+                              style={{
+                                left: `${(idx * 3) % 20}%`,
+                                right: `${(idx * 2 + 5) % 15}%`,
+                                backgroundColor: layer.color,
+                                opacity: 0.75,
+                              }} />
+                          </div>
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                  {/* AE Playhead */}
+                  <div className="relative h-1 shrink-0" style={{ backgroundColor: '#1a1a1a' }}>
+                    <div className="absolute top-0 w-[2px] h-full" style={{ left: `${playheadPos}%`, backgroundColor: '#4a90d9' }} />
+                  </div>
+                </div>
               ) : (
-                /* Premiere / After Effects timeline (original) */
+                /* Premiere Pro timeline */
                 <div className="flex-1 flex flex-col p-2 overflow-hidden">
                   <div className="px-2 py-1 flex justify-between text-[10px] text-gray-400 border-b border-black mb-2">
                     <span>00:00:00:00</span>
@@ -642,22 +704,17 @@ const Index = () => {
                         </div>
                       </div>
                       {/* A1 */}
-                      <div className="h-16 relative flex items-center overflow-hidden rounded-sm mt-1"
-                        style={{ backgroundColor: activeMode === 'effects' ? '#0f0f1e' : '#262626' }}>
+                      <div className="h-16 relative flex items-center overflow-hidden rounded-sm mt-1" style={{ backgroundColor: '#262626' }}>
                         <div className="absolute left-0 w-7 h-full border-r border-black flex items-center justify-center text-[8px] font-bold z-10 shrink-0"
-                          style={{
-                            backgroundColor: activeMode === 'effects' ? '#1a1a2e' : '#333',
-                            color: activeMode === 'effects' ? '#93c5fd' : '#4ade80'
-                          }}>A1</div>
+                          style={{ backgroundColor: '#333', color: '#4ade80' }}>A1</div>
                         <div className="flex-1 ml-7 h-full">
                           <AudioWaveform mode={activeMode} isPlaying={isPlaying} playheadPos={playheadPos} barCount={80} className="w-full h-full" />
                         </div>
                       </div>
                     </div>
                     {/* Playhead */}
-                    <div className="absolute top-0 bottom-0 w-[2px] z-30" style={{ left: `${playheadPos}%`, backgroundColor: activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }}>
-                      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px]"
-                        style={{ borderTopColor: activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }} />
+                    <div className="absolute top-0 bottom-0 w-[2px] z-30" style={{ left: `${playheadPos}%`, backgroundColor: '#ef4444' }}>
+                      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-[#ef4444]" />
                     </div>
                   </div>
                 </div>
