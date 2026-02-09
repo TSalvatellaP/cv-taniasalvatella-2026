@@ -127,22 +127,23 @@
 /* AE keyframe */
 .ae-keyframe {
   cursor: ew-resize;
-  filter: drop-shadow(0 0 4px rgba(49, 168, 255, 0.8));
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.8));
 }
 
 /* DaVinci node */
 .dr-node {
-  background: linear-gradient(180deg, #333 0%, #222 100%);
+  background: #111;
   border: 1px solid #444;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
   cursor: pointer;
 }
 
 /* DaVinci color wheel */
 .dr-wheel {
-  background: radial-gradient(circle, #2a2a2a 60%, #1a1a1a 100%);
+  background: #222;
   border: 2px solid #333;
   cursor: crosshair;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
 }
 
 /* Warning bar */
@@ -156,7 +157,7 @@
 
 /* Signal failure effects */
 .signal-pixelated {
-  filter: contrast(1.5) saturate(1.2);
+  filter: url(#pixelate-filter) contrast(1.5) saturate(1.2);
   transform: scale(1.02);
   transition: all 0.1s steps(4);
 }
@@ -178,6 +179,22 @@
   position: relative;
 }
 
+/* AE row styles */
+.ae-row {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  border-bottom: 1px solid #2a2a2a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.ae-row:hover {
+  background-color: #2a2a2a;
+}
+.ae-row.selected {
+  background-color: #383838;
+  color: white;
+}
+
 /* Premiere transitions */
 .pr-transition {
   background: linear-gradient(90deg, #d1d5db 0%, #9ca3af 50%, #d1d5db 100%);
@@ -190,8 +207,48 @@
   border-color: white;
 }
 
+/* Drag & Drop styles */
+.draggable-item {
+  cursor: grab;
+}
+.draggable-item:active {
+  cursor: grabbing;
+}
+.drop-active {
+  border: 2px dashed #4BFF4B !important;
+  background-color: rgba(75, 255, 75, 0.1) !important;
+}
+
 /* Node grid pattern */
 .node-grid {
   background-size: 20px 20px;
   background-image: radial-gradient(circle, #333 1px, transparent 1px);
+}
+
+/* Fullscreen datamosh glitch */
+.glitch-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: exclusion;
+}
+@keyframes glitch-slice {
+  0% { clip-path: inset(20% 0 80% 0); transform: translate(-5px, 2px); }
+  20% { clip-path: inset(60% 0 10% 0); transform: translate(5px, -2px); }
+  40% { clip-path: inset(10% 0 50% 0); transform: translate(-5px, 5px); }
+  60% { clip-path: inset(80% 0 5% 0); transform: translate(5px, -5px); }
+  80% { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 2px); }
+  100% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -2px); }
+}
+.glitch-anim {
+  background: white;
+  opacity: 0.1;
+  animation: glitch-slice 0.2s infinite linear;
+}
+.glitch-color {
+  background: linear-gradient(90deg, rgba(255,0,0,0.5), rgba(0,255,0,0.5), rgba(0,0,255,0.5));
+  mix-blend-mode: hard-light;
+  opacity: 0.2;
+  animation: glitch-slice 0.3s infinite reverse;
 }
