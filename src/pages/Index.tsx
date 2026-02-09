@@ -18,6 +18,7 @@ import { ResolveIcon, AdobeAeIcon, AdobePrIcon, AeCompIcon, PrSequenceIcon, DrSe
 import { ExportModal } from '@/components/cv/ExportModal';
 import { AEWarning, PRWarning, DRWarning } from '@/components/cv/Warnings';
 import { ExperienceDetailMonitor } from '@/components/cv/ExperienceDetailMonitor';
+import { AudioWaveform, DesktopAudioWaveformSVG } from '@/components/cv/AudioWaveform';
 
 type Mode = 'editing' | 'effects' | 'color';
 
@@ -343,27 +344,37 @@ const Index = () => {
       {showExportModal && <ExportModal onClose={() => setShowExportModal(false)} lang={lang} />}
 
       {/* ========== MOBILE PRO INTERFACE (Tabbed) ========== */}
-      <div className="md:hidden flex flex-col h-screen bg-[#1A1A1A] text-white overflow-hidden relative">
-        {/* Mobile Header */}
-        <div className="flex justify-between items-center px-4 py-2 z-20 bg-[#2D2D2D] border-b border-black shrink-0 h-12">
+      <div className="md:hidden flex flex-col h-screen text-white overflow-hidden relative"
+        style={{ backgroundColor: activeMode === 'color' ? '#121212' : activeMode === 'effects' ? '#161616' : '#1A1A1A' }}>
+        {/* Mobile Header — adapts per mode */}
+        <div className="flex justify-between items-center px-3 py-2 z-20 border-b border-black shrink-0 h-12"
+          style={{ backgroundColor: activeMode === 'color' ? '#1a1a1a' : activeMode === 'effects' ? '#1D1D1D' : '#2D2D2D' }}>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-gradient-to-tr from-purple-500 to-orange-400 p-[1px]">
-              <div className="w-full h-full rounded bg-black flex items-center justify-center">
-                <span className="font-black text-[9px]">TS</span>
-              </div>
-            </div>
+            <div className="w-6 h-6 shrink-0">{headerInfo.icon}</div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-bold leading-none truncate max-w-[120px]">Tania Salvatella</span>
-              <span className="text-[8px] text-gray-400 leading-none">CV_2026.prproj</span>
+              <span className="text-[10px] font-bold leading-none truncate max-w-[130px]">Tania Salvatella</span>
+              <span className="text-[7px] leading-none truncate max-w-[150px]" style={{ color: headerInfo.accent }}>
+                {activeMode === 'color' ? 'CV_Tania.drp' : activeMode === 'effects' ? 'CV_Tania.aep' : 'CV_2026.prproj'}
+              </span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setMonitorFormat(prev => prev === 'landscape' ? 'portrait' : 'landscape')}
-              className="p-1.5 rounded bg-black/20 hover:bg-white/10 border border-white/5 transition-colors">
-              {monitorFormat === 'landscape' ? <Smartphone size={14} className="text-gray-400" /> : <Monitor size={14} className="text-white" />}
-            </button>
+          <div className="flex items-center gap-1.5">
+            {/* Mode switcher mini */}
+            <div className="flex rounded overflow-hidden border border-white/10">
+              {(['editing', 'effects', 'color'] as Mode[]).map(m => (
+                <button key={m} onClick={() => switchMode(m)}
+                  className="px-2 py-1 text-[7px] font-bold uppercase transition-all"
+                  style={{
+                    backgroundColor: activeMode === m ? (m === 'effects' ? '#D8A5FA' : m === 'color' ? '#f39c12' : '#3EA6F2') : 'transparent',
+                    color: activeMode === m ? '#000' : '#666'
+                  }}>
+                  {m === 'editing' ? 'Pr' : m === 'effects' ? 'Ae' : 'Dr'}
+                </button>
+              ))}
+            </div>
             <button onClick={() => setShowExportModal(true)}
-              className="bg-premiere text-white p-1.5 rounded-sm text-xs font-bold flex items-center gap-1 shadow-lg active:scale-95 transition-transform">
+              className="p-1.5 rounded-sm text-xs font-bold flex items-center gap-1 shadow-lg active:scale-95 transition-transform"
+              style={{ backgroundColor: headerInfo.accent, color: activeMode === 'editing' ? '#fff' : '#000' }}>
               <Share size={14} fill="currentColor" />
             </button>
           </div>
@@ -450,10 +461,11 @@ const Index = () => {
 
           {/* TAB: TIMELINE */}
           {mobileTab === 'timeline' && (
-            <div className="absolute inset-0 flex flex-col bg-[#1F1F1F] p-2 overflow-hidden">
+            <div className="absolute inset-0 flex flex-col p-2 overflow-hidden"
+              style={{ backgroundColor: activeMode === 'color' ? '#181818' : activeMode === 'effects' ? '#161616' : '#1F1F1F' }}>
               <div className="px-2 py-1 flex justify-between text-[10px] text-gray-400 border-b border-black mb-2">
                 <span>00:00:00:00</span>
-                <span className="text-premiere">{getTimecode(playheadPos)}</span>
+                <span style={{ color: headerInfo.accent }}>{getTimecode(playheadPos)}</span>
                 <span>00:15:20:00</span>
               </div>
               <div className="flex-1 relative overflow-y-auto bg-[#1A1A1A] border border-white/5 rounded">
@@ -499,49 +511,29 @@ const Index = () => {
                       ))}
                     </div>
                   </div>
-                  {/* A1 — Realistic stereo audio waveform */}
-                  <div className="h-16 bg-[#262626] relative flex items-center overflow-hidden rounded-sm mt-1">
-                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">A1</div>
-                    <div className="flex-1 ml-7 h-full bg-[#1a2a2a] relative overflow-hidden">
-                      {/* Center line */}
-                      <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-teal-500/20 z-0" />
-                      {/* Waveform bars — upper channel */}
-                      <div className="absolute top-0 left-0 right-0 h-1/2 flex items-end px-[1px]">
-                        {Array.from({ length: 80 }).map((_, i) => {
-                          const h = Math.abs(Math.sin(i * 0.4) * Math.cos(i * 0.15) * 100 + Math.sin(i * 1.1) * 40);
-                          const norm = Math.max(8, Math.min(95, h));
-                          return (
-                            <div key={`u${i}`} className="flex-1 mx-[0.3px] rounded-t-[1px]" style={{
-                              height: `${norm}%`,
-                              backgroundColor: norm > 75 ? '#f59e0b' : norm > 50 ? '#2dd4bf' : '#1a9a7a',
-                              opacity: 0.8
-                            }} />
-                          );
-                        })}
-                      </div>
-                      {/* Waveform bars — lower channel (mirrored) */}
-                      <div className="absolute bottom-0 left-0 right-0 h-1/2 flex items-start px-[1px]">
-                        {Array.from({ length: 80 }).map((_, i) => {
-                          const h = Math.abs(Math.sin(i * 0.4 + 0.3) * Math.cos(i * 0.15 + 0.1) * 100 + Math.sin(i * 1.1 + 0.5) * 35);
-                          const norm = Math.max(8, Math.min(90, h));
-                          return (
-                            <div key={`l${i}`} className="flex-1 mx-[0.3px] rounded-b-[1px]" style={{
-                              height: `${norm}%`,
-                              backgroundColor: norm > 75 ? '#f59e0b' : norm > 50 ? '#2dd4bf' : '#1a9a7a',
-                              opacity: 0.7
-                            }} />
-                          );
-                        })}
-                      </div>
-                      {/* dB scale markers */}
-                      <div className="absolute top-0 right-1 text-[5px] text-teal-500/40 font-mono">0dB</div>
-                      <div className="absolute bottom-0 right-1 text-[5px] text-teal-500/40 font-mono">-48dB</div>
+                  {/* A1 — Adaptive animated audio waveform */}
+                  <div className="h-16 relative flex items-center overflow-hidden rounded-sm mt-1"
+                    style={{ backgroundColor: activeMode === 'color' ? '#1a1408' : activeMode === 'effects' ? '#0f0f1e' : '#262626' }}>
+                    <div className="absolute left-0 w-7 h-full border-r border-black flex items-center justify-center text-[8px] font-bold z-10 shrink-0"
+                      style={{
+                        backgroundColor: activeMode === 'color' ? '#2a2210' : activeMode === 'effects' ? '#1a1a2e' : '#333',
+                        color: activeMode === 'color' ? '#fbbf24' : activeMode === 'effects' ? '#93c5fd' : '#4ade80'
+                      }}>A1</div>
+                    <div className="flex-1 ml-7 h-full">
+                      <AudioWaveform
+                        mode={activeMode}
+                        isPlaying={isPlaying}
+                        playheadPos={playheadPos}
+                        barCount={80}
+                        className="w-full h-full"
+                      />
                     </div>
                   </div>
                 </div>
-                {/* Playhead */}
-                <div className="absolute top-0 bottom-0 w-[2px] bg-red-500 z-30" style={{ left: `${playheadPos}%` }}>
-                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-red-500" />
+                {/* Playhead — mode-adaptive color */}
+                <div className="absolute top-0 bottom-0 w-[2px] z-30" style={{ left: `${playheadPos}%`, backgroundColor: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }}>
+                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px]"
+                    style={{ borderTopColor: activeMode === 'color' ? '#f39c12' : activeMode === 'effects' ? '#D8A5FA' : '#ef4444' }} />
                 </div>
               </div>
             </div>
@@ -601,20 +593,28 @@ const Index = () => {
           )}
         </div>
 
-        {/* Mobile Bottom Tab Bar */}
-        <div className="h-14 bg-[#111] border-t border-white/10 flex items-center justify-around shrink-0 z-30">
-          <button onClick={() => setMobileTab('bin')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'bin' ? 'text-premiere' : 'text-gray-500'}`}>
-            <Folder size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_bin}</span>
-          </button>
-          <button onClick={() => setMobileTab('monitor')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'monitor' ? 'text-premiere' : 'text-gray-500'}`}>
-            <MonitorPlay size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_monitor}</span>
-          </button>
-          <button onClick={() => setMobileTab('timeline')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'timeline' ? 'text-premiere' : 'text-gray-500'}`}>
-            <Scissors size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_timeline}</span>
-          </button>
-          <button onClick={() => setMobileTab('inspector')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'inspector' ? 'text-premiere' : 'text-gray-500'}`}>
-            <Sliders size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_info}</span>
-          </button>
+        {/* Mobile Bottom Tab Bar — adapts per mode */}
+        <div className="h-14 border-t flex items-center justify-around shrink-0 z-30"
+          style={{
+            backgroundColor: activeMode === 'color' ? '#0d0d0d' : activeMode === 'effects' ? '#111118' : '#111',
+            borderColor: activeMode === 'color' ? '#f39c1220' : activeMode === 'effects' ? '#D8A5FA20' : '#ffffff18'
+          }}>
+          {([
+            { id: 'bin' as const, icon: <Folder size={18} />, label: t.mob_bin },
+            { id: 'monitor' as const, icon: <MonitorPlay size={18} />, label: t.mob_monitor },
+            { id: 'timeline' as const, icon: activeMode === 'effects' ? <Layers size={18} /> : <Scissors size={18} />, label: t.mob_timeline },
+            { id: 'inspector' as const, icon: <Sliders size={18} />, label: t.mob_info },
+          ]).map(tab => (
+            <button key={tab.id} onClick={() => setMobileTab(tab.id)}
+              className="flex flex-col items-center gap-1 p-2 transition-colors"
+              style={{ color: mobileTab === tab.id ? headerInfo.accent : '#666' }}>
+              {tab.icon}
+              <span className="text-[8px] font-bold uppercase">{tab.label}</span>
+              {mobileTab === tab.id && (
+                <div className="w-4 h-[2px] rounded-full" style={{ backgroundColor: headerInfo.accent }} />
+              )}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -1006,7 +1006,7 @@ const Index = () => {
             playheadPos={playheadPos} timelineContentRef={timelineContentRef} timelineRef={timelineRef} lang={lang}
           />
         ) : (
-          <EditingTimeline t={t} selectedExp={selectedExp} setSelectedExp={setSelectedExp} playheadPos={playheadPos} lang={lang} getTimecode={getTimecode} />
+          <EditingTimeline t={t} selectedExp={selectedExp} setSelectedExp={setSelectedExp} playheadPos={playheadPos} lang={lang} getTimecode={getTimecode} activeMode={activeMode} isPlaying={isPlaying} />
         )}
 
         {/* Audio meters */}
@@ -1224,7 +1224,7 @@ const EffectsTimeline = ({ t, selectedExp, setSelectedExp, expandedLayers, toggl
   </div>
 );
 
-const EditingTimeline = ({ t, selectedExp, setSelectedExp, playheadPos, lang, getTimecode }: any) => (
+const EditingTimeline = ({ t, selectedExp, setSelectedExp, playheadPos, lang, getTimecode, activeMode, isPlaying }: any) => (
   <div className="flex-1 flex overflow-hidden bg-[#1F1F1F]">
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="h-8 bg-secondary flex items-center px-4 border-b border-black justify-between shrink-0">
@@ -1304,7 +1304,7 @@ const EditingTimeline = ({ t, selectedExp, setSelectedExp, playheadPos, lang, ge
             </div>
           </div>
           <div className="h-4 bg-[#1F1F1F] w-full border-b border-black/30"></div>
-          {/* A1 Audio track */}
+          {/* A1 Audio track — adaptive waveform */}
           <div className="flex h-20 border-b border-black/30 relative">
             <div className="w-16 h-full bg-[#262626] border-r border-black flex flex-col items-center p-1 text-[10px] text-muted-foreground font-bold shrink-0 relative">
               <div className="w-full flex justify-between mb-1">
@@ -1315,29 +1315,13 @@ const EditingTimeline = ({ t, selectedExp, setSelectedExp, playheadPos, lang, ge
             </div>
             <div className="flex-1 flex relative p-0 overflow-hidden w-full">
               {t.exp_data.map((exp: ExperienceItem) => (
-                <div key={`audio-${exp.id}`} className="h-full flex-1 flex flex-col relative overflow-hidden group border border-black/40 bg-[#008f7a]">
+                <div key={`audio-${exp.id}`} className="h-full flex-1 flex flex-col relative overflow-hidden group border border-black/40"
+                  style={{ backgroundColor: activeMode === 'color' ? '#3d2e0a' : activeMode === 'effects' ? '#1e3a5f' : '#008f7a' }}>
                   <div className="h-4 w-full bg-black/10 flex items-center px-1">
                     <span className="text-[9px] font-bold text-black/60 truncate">{exp.title} [Audio]</span>
                   </div>
                   <div className="flex-1 w-full relative flex items-center justify-center overflow-hidden px-1">
-                    <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-                      <path
-                        d={`M 0 50 ${Array.from({ length: 60 }).map((_, i) => {
-                          const x = (i / 59) * 100;
-                          const noise = Math.random();
-                          const amp = noise > 0.7 ? 40 : (noise > 0.4 ? 20 : 5);
-                          const y = 50 - (Math.random() * amp);
-                          return `L ${x} ${y}`;
-                        }).join(' ')} L 100 50 ${Array.from({ length: 60 }).map((_, i) => {
-                          const x = ((59 - i) / 59) * 100;
-                          const noise = Math.random();
-                          const amp = noise > 0.7 ? 40 : (noise > 0.4 ? 20 : 5);
-                          const y = 50 + (Math.random() * amp);
-                          return `L ${x} ${y}`;
-                        }).join(' ')} Z`}
-                        fill="#4ade80" opacity="0.6"
-                      />
-                    </svg>
+                    <DesktopAudioWaveformSVG mode={activeMode} isPlaying={isPlaying} clipId={exp.id} />
                   </div>
                 </div>
               ))}
