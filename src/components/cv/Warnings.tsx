@@ -32,20 +32,20 @@ export const AEWarning = ({ onOpenClassic, onClose, t }: WarningProps) => {
           </div>
         </div>
       )}
-      <div className="ae-warning-bar w-full flex items-center justify-between px-3 py-1 animate-in fade-in slide-in-from-bottom duration-300">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-black">
-            <AlertTriangle size={13} fill="currentColor" />
-            <Info size={13} fill="currentColor" />
+      <div className="ae-warning-bar w-full flex items-center justify-between px-2 py-1 animate-in fade-in slide-in-from-bottom duration-300 shrink-0 overflow-hidden">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <div className="flex items-center gap-1 text-black shrink-0">
+            <AlertTriangle size={12} fill="currentColor" />
+            <Info size={12} fill="currentColor" />
           </div>
-          <span className="text-[10px] font-bold text-black truncate uppercase tracking-tighter">PDF Backup Available - Click Search</span>
+          <span className="text-[8px] sm:text-[10px] font-bold text-black truncate uppercase tracking-tighter">PDF Backup Available</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 shrink-0">
           <button onClick={() => setShowLog(true)} className="bg-black/20 hover:bg-black/30 p-1 rounded-sm transition-colors text-black">
-            <Search size={13} strokeWidth={3} />
+            <Search size={12} strokeWidth={3} />
           </button>
           <button onClick={onClose} className="hover:bg-black/20 p-1 rounded-sm text-black">
-            <X size={13} strokeWidth={3} />
+            <X size={12} strokeWidth={3} />
           </button>
         </div>
       </div>
