@@ -456,60 +456,93 @@ const Index = () => {
                 <span className="text-premiere">{getTimecode(playheadPos)}</span>
                 <span>00:15:20:00</span>
               </div>
-              <div className="flex-1 relative overflow-x-auto overflow-y-auto bg-[#1A1A1A] border border-white/5 rounded">
-                <div className="space-y-1 p-1 min-w-[500px]">
+              <div className="flex-1 relative overflow-y-auto bg-[#1A1A1A] border border-white/5 rounded">
+                <div className="space-y-1 p-1">
                   {/* V1 — Artistic projects (first half) */}
-                  <div className="h-12 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">V1</div>
-                    <div className="flex-1 ml-8 flex overflow-hidden h-full">
+                  <div className="h-14 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">V1</div>
+                    <div className="flex-1 ml-7 flex overflow-hidden h-full">
                       {t.art_data.slice(0, 3).map((art, idx) => (
-                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all"
-                          style={{ backgroundColor: `${art.color || art.labelPr}30` }}
+                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
+                          style={{ backgroundColor: `${art.color || art.labelPr}25` }}
                           onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
-                          <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: art.color || art.labelPr }} />
-                          <span className="absolute top-1.5 left-1 text-[7px] font-bold truncate pr-1" style={{ color: art.color || art.labelPr }}>{art.title}</span>
-                          <span className="absolute bottom-1 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+                          <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
+                          <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
+                          <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   {/* V2 — Artistic projects (second half) */}
-                  <div className="h-12 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">V2</div>
-                    <div className="flex-1 ml-8 flex overflow-hidden h-full">
+                  <div className="h-14 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">V2</div>
+                    <div className="flex-1 ml-7 flex overflow-hidden h-full">
                       {t.art_data.slice(3).map((art, idx) => (
-                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all"
-                          style={{ backgroundColor: `${art.color || art.labelPr}30` }}
+                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
+                          style={{ backgroundColor: `${art.color || art.labelPr}25` }}
                           onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
-                          <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: art.color || art.labelPr }} />
-                          <span className="absolute top-1.5 left-1 text-[7px] font-bold truncate pr-1" style={{ color: art.color || art.labelPr }}>{art.title}</span>
-                          <span className="absolute bottom-1 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+                          <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
+                          <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
+                          <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   {/* C1 — Captions / Education */}
                   <div className="h-8 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">C1</div>
-                    <div className="flex-1 ml-8 flex overflow-hidden">
+                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">C1</div>
+                    <div className="flex-1 ml-7 flex overflow-hidden">
                       {t.edu_data.map((edu, idx) => (
-                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative bg-emerald-800/40">
-                          <span className="absolute top-0.5 left-1 text-[6px] text-emerald-200 font-bold truncate w-full pr-1">{edu.label}</span>
+                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative bg-emerald-800/40 min-w-0">
+                          <span className="absolute top-0.5 left-0.5 right-0.5 text-[5px] text-emerald-200 font-bold truncate">{edu.label}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  {/* A1 — Audio waveform */}
-                  <div className="h-10 bg-[#262626] relative flex items-center overflow-hidden rounded-sm mt-1">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">A1</div>
-                    <div className="flex-1 ml-8 flex bg-teal-900/40">
-                      <svg className="w-full h-full opacity-50" preserveAspectRatio="none" viewBox="0 0 100 100">
-                        <path d="M0 50 L10 40 L20 60 L30 30 L40 70 L50 20 L60 80 L70 40 L80 60 L90 45 L100 50" fill="none" stroke="#2dd4bf" strokeWidth="2"/>
-                      </svg>
+                  {/* A1 — Realistic stereo audio waveform */}
+                  <div className="h-16 bg-[#262626] relative flex items-center overflow-hidden rounded-sm mt-1">
+                    <div className="absolute left-0 w-7 h-full bg-[#333] border-r border-black flex items-center justify-center text-[8px] font-bold text-gray-500 z-10 shrink-0">A1</div>
+                    <div className="flex-1 ml-7 h-full bg-[#1a2a2a] relative overflow-hidden">
+                      {/* Center line */}
+                      <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-teal-500/20 z-0" />
+                      {/* Waveform bars — upper channel */}
+                      <div className="absolute top-0 left-0 right-0 h-1/2 flex items-end px-[1px]">
+                        {Array.from({ length: 80 }).map((_, i) => {
+                          const h = Math.abs(Math.sin(i * 0.4) * Math.cos(i * 0.15) * 100 + Math.sin(i * 1.1) * 40);
+                          const norm = Math.max(8, Math.min(95, h));
+                          return (
+                            <div key={`u${i}`} className="flex-1 mx-[0.3px] rounded-t-[1px]" style={{
+                              height: `${norm}%`,
+                              backgroundColor: norm > 75 ? '#f59e0b' : norm > 50 ? '#2dd4bf' : '#1a9a7a',
+                              opacity: 0.8
+                            }} />
+                          );
+                        })}
+                      </div>
+                      {/* Waveform bars — lower channel (mirrored) */}
+                      <div className="absolute bottom-0 left-0 right-0 h-1/2 flex items-start px-[1px]">
+                        {Array.from({ length: 80 }).map((_, i) => {
+                          const h = Math.abs(Math.sin(i * 0.4 + 0.3) * Math.cos(i * 0.15 + 0.1) * 100 + Math.sin(i * 1.1 + 0.5) * 35);
+                          const norm = Math.max(8, Math.min(90, h));
+                          return (
+                            <div key={`l${i}`} className="flex-1 mx-[0.3px] rounded-b-[1px]" style={{
+                              height: `${norm}%`,
+                              backgroundColor: norm > 75 ? '#f59e0b' : norm > 50 ? '#2dd4bf' : '#1a9a7a',
+                              opacity: 0.7
+                            }} />
+                          );
+                        })}
+                      </div>
+                      {/* dB scale markers */}
+                      <div className="absolute top-0 right-1 text-[5px] text-teal-500/40 font-mono">0dB</div>
+                      <div className="absolute bottom-0 right-1 text-[5px] text-teal-500/40 font-mono">-48dB</div>
                     </div>
                   </div>
                 </div>
-                <div className="absolute top-0 bottom-0 w-[2px] bg-red-500 z-30" style={{ left: `${playheadPos}%` }}></div>
+                {/* Playhead */}
+                <div className="absolute top-0 bottom-0 w-[2px] bg-red-500 z-30" style={{ left: `${playheadPos}%` }}>
+                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-red-500" />
+                </div>
               </div>
             </div>
           )}
