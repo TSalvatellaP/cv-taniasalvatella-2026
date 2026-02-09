@@ -1044,7 +1044,8 @@ const Index = () => {
         {/* INSPECTOR (RIGHT) */}
         <section className={`order-3 md:order-3 col-span-12 md:col-span-2 flex flex-col overflow-hidden ${activeMode === 'effects' ? 'bg-[#232323]' : activeMode === 'color' ? 'bg-[#1a1a1a]' : 'bg-[#232323]'} border border-black/50 h-64 md:h-auto`}>
           <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-            <div className="flex justify-between items-center text-[10px] font-bold text-foreground mb-5 uppercase tracking-widest border-b border-black pb-2 sticky top-0 bg-inherit z-10">
+            <div className="flex justify-between items-center text-[10px] font-bold text-foreground mb-5 uppercase tracking-widest border-b border-black pb-2 sticky top-0 z-10"
+              style={{ backgroundColor: activeMode === 'effects' ? '#232323' : activeMode === 'color' ? '#1a1a1a' : '#232323' }}>
               <div className="flex items-center gap-2">
                 {activeMode === 'color' ? <Layers2 size={12} className="text-davinci" /> : <Sliders size={12} className={activeMode === 'effects' ? 'text-aftereffects' : 'text-premiere'} />}
                 <span>{activeMode === 'color' ? t.nodes : t.inspector}</span>
