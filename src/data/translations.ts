@@ -40,6 +40,7 @@ export interface TranslationData {
   paused: string;
   techPipeline: string;
   genAiEngine: string;
+  broadcastSys: string;
   nodes: string;
   inspector: string;
   education_title: string;
@@ -69,8 +70,48 @@ export interface TranslationData {
   statusLabel: string;
   outputPath: string;
   startProcessing: string;
+  transferring: string;
   selectClip: string;
   undo_toast: string;
+  
+  // Signal & Monitor
+  rec_play: string;
+  poor_signal: string;
+  connection_lost: string;
+  weak_signal: string;
+  no_signal: string;
+  buffering: string;
+  source_label: string;
+  clip_label: string;
+  desktop_mode: string;
+  social_mode: string;
+  
+  // Tabs & Panels
+  project_bin: string;
+  media_browser: string;
+  gallery: string;
+  media_pool: string;
+  project: string;
+  assets_lib: string;
+  
+  // Inspector
+  selected_item: string;
+  no_clip: string;
+  select_hint: string;
+  tech_specs: string;
+  frame_rate: string;
+  resolution: string;
+  reset: string;
+  
+  // Timeline
+  empty_track: string;
+  
+  // Mobile tabs
+  mob_bin: string;
+  mob_monitor: string;
+  mob_timeline: string;
+  mob_info: string;
+  
   soft_skills: {
     english: string;
     creativity: string;
@@ -88,6 +129,7 @@ export interface TranslationData {
   phrases: string[];
   techSkills: { n: string; v: string }[];
   genAiModels: string[];
+  broadcastSystemsList: string[];
   exp_data: ExperienceItem[];
   edu_data: { year: string; label: string }[];
   art_data: ExperienceItem[];
@@ -110,8 +152,8 @@ export const translations: Record<string, TranslationData> = {
     items: "ELEMENTOS",
     name: "Nombre",
     mediaType: "Tipo de Medio",
-    artisticProjects: "Proyectos",
-    backToBin: "Volver al Contenedor",
+    artisticProjects: "Proyectos Artísticos",
+    backToBin: "Volver a Bandeja",
     eduComp: "Educación.comp",
     workspaceTip: "INFO DE NAVEGACIÓN",
     tipDesc: "Interacciona con las pantallas. Usa Exportar para contacto.",
@@ -121,6 +163,7 @@ export const translations: Record<string, TranslationData> = {
     paused: "PAUSADO: FUENTE",
     techPipeline: "Pipeline Tecnológico",
     genAiEngine: "Motor Gen-AI",
+    broadcastSys: "Sistemas Broadcast & IT",
     nodes: "Nodos",
     inspector: "Inspector",
     education_title: "EDUCACIÓN_",
@@ -150,8 +193,48 @@ export const translations: Record<string, TranslationData> = {
     statusLabel: "Estado",
     outputPath: "Ruta de Salida",
     startProcessing: "Iniciar Procesamiento",
+    transferring: "Transfiriendo...",
     selectClip: "Arrastra un clip aquí",
     undo_toast: "Deshacer (Ctrl+Z) no disponible en la vida real 😉",
+    
+    // Signal & Monitor
+    rec_play: "GRAB [PLAY]",
+    poor_signal: "SEÑAL DÉBIL",
+    connection_lost: "CONEXIÓN PERDIDA",
+    weak_signal: "SEÑAL INESTABLE",
+    no_signal: "SIN SEÑAL",
+    buffering: "CARGANDO...",
+    source_label: "Fuente: CV_Tania.prproj",
+    clip_label: "Clip: Salida_Maestro",
+    desktop_mode: "Escritorio",
+    social_mode: "Social",
+    
+    // Tabs & Panels
+    project_bin: "Bandeja Proyecto",
+    media_browser: "Navegador Medios",
+    gallery: "Galería",
+    media_pool: "Contenedor Medios",
+    project: "Proyecto",
+    assets_lib: "Librería Activos",
+    
+    // Inspector
+    selected_item: "Elemento Seleccionado",
+    no_clip: "Ningún clip seleccionado",
+    select_hint: "Selecciona un clip de la bandeja",
+    tech_specs: "Especificaciones Técnicas",
+    frame_rate: "Velocidad de Fotograma",
+    resolution: "Resolución",
+    reset: "Resetear",
+    
+    // Timeline
+    empty_track: "--- PISTA VACÍA ---",
+    
+    // Mobile tabs
+    mob_bin: "Bandeja",
+    mob_monitor: "Monitor",
+    mob_timeline: "Línea Tiempo",
+    mob_info: "Info",
+    
     soft_skills: {
       english: "Inglés_B1",
       creativity: "Creatividad",
@@ -185,6 +268,10 @@ export const translations: Record<string, TranslationData> = {
       { n: "Cinema 4D", v: "BÁSICO" }
     ],
     genAiModels: ["Sora", "ElevenLabs", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
+    broadcastSystemsList: [
+      "OpenText", "MPX", "Forge", "VPMS", "iNews", "Vantage", "FileZilla",
+      "EVS", "Dalet", "Jira", "Confluence", "Kayako", "Slack", "Splunk Grafana", "Microsoft 365"
+    ],
     exp_data: [
       {
         id: "motion", title: "Edición / Motion", period: "2024–25", company: "Wata Studio / Inmersive Creature",
@@ -200,7 +287,7 @@ export const translations: Record<string, TranslationData> = {
         iconName: "Radio", labelPr: "#5E7C9D", labelAe: "#6A8B9D",
         fullHistory: [
           { year: "2025", label: "Telefónica TSA", desc: "Operadora de CCG N1 TV y OTT. Monitorado y gestión de alarmas." },
-          { year: "2019-2024", label: "Beon Media", desc: "MCR Content Operator. Technical supervision and international continuity for live feeds." },
+          { year: "2019-2024", label: "Beon Media", desc: "MCR Content Operator. Supervisión técnica y continuidad internacional de feeds en vivo." },
           { year: "2018-2019", label: "Olympic Channel", desc: "Coordinadora de Medios - Sistemas y Flujos de Trabajo." },
           { year: "2016-2018", label: "Movistar +", desc: "Operadora de Verificación QC. Control de calidad de los contenidos." },
           { year: "2015-2018", label: "Mediaset", desc: "Técnica de emisión operadora de enlaces. Ingesta de Informativos Telecinco y Cuatro, Deportes." },
@@ -220,16 +307,16 @@ export const translations: Record<string, TranslationData> = {
       { year: "2025", label: "PROGRAMACIÓN DISEÑO WEB - ADALAB" },
       { year: "2025", label: "DOCENCIA FORMACIÓN PROFESIONAL - SSCE0110" },
       { year: "2022", label: "MÁSTER MOTION GRAPHICS - CICE" },
-      { year: "2016", label: "LICENCIATURA COMUNICACIÓN AUDIOVISUAL - UCM" },
+      { year: "2016", label: "GRADO COMUNICACIÓN AUDIOVISUAL - UCM" },
       { year: "2007", label: "TÉCNICO SUPERIOR IMAGEN - IES PUERTA BONITA" }
     ],
     art_data: [
-      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [], url: "https://vimeo.com/708694989" },
-      { id: "vid2", title: "Docu: Naturaleza Viva", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid3", title: "Corto: Silencio", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid5", title: "Video Arte: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" }
+      { id: "id1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [], url: "I'M ON IT" },
+      { id: "vid2", title: "Docu: Legacy - WATA", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [], url: "https://youtu.be/7M8TEeqD4Wc?si=Jh7_5hqmkWQAdxeV" },
+      { id: "vid3", title: "Reels RRSS: Gournay - WATA", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [], url: "https://www.instagram.com/gournay_es/" },
+      { id: "vid4", title: "Reel Ozono", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [], url: "https://ozonofilms.com/" },
+      { id: "vid5", title: "Reel WATA", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [], url: "https://watastudio.com/marketing-digital/" },
+      { id: "vid6", title: "Vimeo: Olds Works", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" }
     ]
   },
   en: {
@@ -248,7 +335,7 @@ export const translations: Record<string, TranslationData> = {
     items: "ITEMS",
     name: "Name",
     mediaType: "Media Type",
-    artisticProjects: "Projects",
+    artisticProjects: "Artistic Projects",
     backToBin: "Back to Bin",
     eduComp: "Education.comp",
     workspaceTip: "NAVIGATION INFO",
@@ -259,6 +346,7 @@ export const translations: Record<string, TranslationData> = {
     paused: "PAUSED: SOURCE",
     techPipeline: "Tech Pipeline",
     genAiEngine: "Gen-AI Engine",
+    broadcastSys: "Broadcast & IT Systems",
     nodes: "Nodes",
     inspector: "Inspector",
     education_title: "EDUCATION_",
@@ -288,8 +376,48 @@ export const translations: Record<string, TranslationData> = {
     statusLabel: "Status",
     outputPath: "Output Path",
     startProcessing: "Start Processing",
+    transferring: "Transferring...",
     selectClip: "Drag a clip here",
     undo_toast: "Undo (Ctrl+Z) not available in real life 😉",
+    
+    // Signal & Monitor
+    rec_play: "REC [PLAY]",
+    poor_signal: "POOR SIGNAL",
+    connection_lost: "CONNECTION LOST",
+    weak_signal: "WEAK SIGNAL",
+    no_signal: "NO SIGNAL",
+    buffering: "BUFFERING...",
+    source_label: "Source: CV_Tania.prproj",
+    clip_label: "Clip: Master_Output",
+    desktop_mode: "Desktop",
+    social_mode: "Social",
+    
+    // Tabs & Panels
+    project_bin: "Project Bin",
+    media_browser: "Media Browser",
+    gallery: "Gallery",
+    media_pool: "Media Pool",
+    project: "Project",
+    assets_lib: "Assets Library",
+    
+    // Inspector
+    selected_item: "Selected Item",
+    no_clip: "No Clip Selected",
+    select_hint: "Select a clip from the Bin",
+    tech_specs: "Technical Specs",
+    frame_rate: "Frame Rate",
+    resolution: "Resolution",
+    reset: "Reset",
+    
+    // Timeline
+    empty_track: "--- EMPTY TRACK ---",
+    
+    // Mobile tabs
+    mob_bin: "Bin",
+    mob_monitor: "Monitor",
+    mob_timeline: "Timeline",
+    mob_info: "Info",
+    
     soft_skills: {
       english: "English_B1",
       creativity: "Creativity",
@@ -322,7 +450,11 @@ export const translations: Record<string, TranslationData> = {
       { n: "Final Cut Pro X", v: "MID" }, { n: "Adobe Illustrator", v: "BASIC" },
       { n: "Cinema 4D", v: "BASIC" }
     ],
-    genAiModels: ["Sora", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
+    genAiModels: ["Sora", "ElevenLabs", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
+    broadcastSystemsList: [
+      "OpenText", "MPX", "Forge", "VPMS", "iNews", "Vantage", "FileZilla",
+      "EVS", "Dalet", "Jira", "Confluence", "Kayako", "Slack", "Splunk Grafana", "Microsoft 365"
+    ],
     exp_data: [
       {
         id: "motion", title: "Editing / Motion", period: "2024–25", company: "Wata Studio / Inmersive Creature",
@@ -362,12 +494,12 @@ export const translations: Record<string, TranslationData> = {
       { year: "2007", label: "HIGHER TECHNICIAN IMAGE - IES PUERTA BONITA" }
     ],
     art_data: [
-      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid2", title: "Docu: Nature Alive", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid3", title: "Short: Silence", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid5", title: "Video Art: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
-      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" }
+      { id: "id1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [], url: "I'M ON IT" },
+      { id: "vid2", title: "Docu: Legacy - WATA", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [], url: "https://youtu.be/7M8TEeqD4Wc?si=Jh7_5hqmkWQAdxeV" },
+      { id: "vid3", title: "Reels RRSS: Gournay - WATA", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [], url: "https://www.instagram.com/gournay_es/" },
+      { id: "vid4", title: "Reel Ozono", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [], url: "https://ozonofilms.com/" },
+      { id: "vid5", title: "Reel WATA", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [], url: "https://watastudio.com/marketing-digital/" },
+      { id: "vid6", title: "Vimeo: Olds Works", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" }
     ]
   }
 };

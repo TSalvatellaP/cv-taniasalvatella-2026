@@ -29,249 +29,220 @@ export const generateCV = (lang: 'es' | 'en') => {
 
   // --- Top accent bar ---
   doc.setFillColor(...COLORS.premiere);
-  doc.rect(0, 0, W, 3, 'F');
+  doc.rect(0, 0, W, 2.5, 'F');
 
   // --- Header section ---
-  y = 12;
+  y = 10;
   doc.setFillColor(...COLORS.panelBg);
-  doc.rect(0, 6, W, 42, 'F');
+  doc.rect(0, 5, W, 30, 'F');
 
   // Name
   doc.setTextColor(...COLORS.white);
-  doc.setFontSize(28);
+  doc.setFontSize(22);
   doc.setFont('helvetica', 'bold');
-  doc.text('TANIA SALVATELLA', 15, y + 10);
+  doc.text('TANIA SALVATELLA', 12, y + 6);
 
   // Title
-  doc.setFontSize(11);
+  doc.setFontSize(9);
   doc.setTextColor(...COLORS.premiere);
-  doc.text(t.job_title.toUpperCase(), 15, y + 18);
+  doc.text(t.job_title.toUpperCase(), 12, y + 12);
 
   // Contact info on right
-  doc.setFontSize(7);
+  doc.setFontSize(6.5);
   doc.setTextColor(...COLORS.muted);
-  const contactX = 140;
-  doc.text('tsalvatellap@gmail.com', contactX, y + 5);
-  doc.text('650 08 36 22', contactX, y + 9);
-  doc.text('linkedin.com/in/taniasalvatella', contactX, y + 13);
-  doc.text('Madrid, España', contactX, y + 17);
+  const contactX = 145;
+  doc.text('tsalvatellap@gmail.com', contactX, y + 3);
+  doc.text('650 08 36 22', contactX, y + 7);
+  doc.text('linkedin.com/in/taniasalvatella', contactX, y + 11);
+  doc.text('Madrid, España', contactX, y + 15);
 
   // Mode indicators
-  const modeY = y + 26;
-  doc.setFontSize(6);
+  const modeY = y + 18;
+  doc.setFontSize(5.5);
   const modes = [
     { label: lang === 'es' ? 'EDICIÓN' : 'EDITING', color: COLORS.premiere },
     { label: lang === 'es' ? 'EFECTOS' : 'EFFECTS', color: COLORS.aftereffects },
     { label: 'COLOR', color: COLORS.davinci },
   ];
   modes.forEach((mode, i) => {
-    const mx = 15 + i * 30;
+    const mx = 12 + i * 25;
     doc.setFillColor(...mode.color);
-    doc.rect(mx, modeY, 25, 5, 'F');
+    doc.rect(mx, modeY, 22, 4, 'F');
     doc.setTextColor(0, 0, 0);
     doc.setFont('helvetica', 'bold');
-    doc.text(mode.label, mx + 12.5, modeY + 3.5, { align: 'center' });
+    doc.text(mode.label, mx + 11, modeY + 2.8, { align: 'center' });
   });
 
-  // --- Phrase ---
-  y = 55;
-  doc.setTextColor(...COLORS.muted);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'italic');
-  doc.text(`"${t.phrases[0]}"`, W / 2, y, { align: 'center' });
-
   // --- EXPERIENCE section ---
-  y = 65;
+  y = 40;
   doc.setFillColor(...COLORS.headerBg);
-  doc.rect(0, y - 3, W, 8, 'F');
+  doc.rect(0, y - 2, W, 6, 'F');
   doc.setTextColor(...COLORS.premiere);
-  doc.setFontSize(9);
+  doc.setFontSize(7.5);
   doc.setFont('helvetica', 'bold');
-  doc.text(lang === 'es' ? '▶ EXPERIENCIA PROFESIONAL' : '▶ PROFESSIONAL EXPERIENCE', 15, y + 2);
-
-  // Timecode decoration
+  doc.text(lang === 'es' ? '▶ EXPERIENCIA PROFESIONAL' : '▶ PROFESSIONAL EXPERIENCE', 12, y + 1.5);
   doc.setTextColor(...COLORS.muted);
-  doc.setFontSize(6);
-  doc.text('00:00:00:00', W - 35, y + 2);
+  doc.setFontSize(5);
+  doc.text('00:00:00:00', W - 30, y + 1.5);
 
-  y += 12;
+  y += 8;
 
   const expColors = [COLORS.accent2, COLORS.accent3, COLORS.accent4];
   t.exp_data.forEach((exp, idx) => {
-    // Experience header bar
+    // Experience header
     doc.setFillColor(...expColors[idx % expColors.length]);
-    doc.rect(15, y - 1, 2, 6, 'F');
+    doc.rect(12, y - 0.5, 1.5, 4.5, 'F');
 
-    doc.setTextColor(...COLORS.white);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text(exp.title.toUpperCase(), 20, y + 2);
-
-    doc.setTextColor(...COLORS.muted);
-    doc.setFontSize(7);
-    doc.text(`${exp.company}  |  ${exp.period}`, 20, y + 6);
-
-    y += 10;
-
-    // History entries
-    exp.fullHistory.forEach((item) => {
-      if (y > 270) {
-        addNewPage(doc);
-        y = 15;
-      }
-
-      // Year badge
-      doc.setFillColor(...COLORS.headerBg);
-      doc.roundedRect(20, y - 2, 22, 5, 1, 1, 'F');
-      doc.setTextColor(...COLORS.premiere);
-      doc.setFontSize(6);
-      doc.setFont('helvetica', 'bold');
-      doc.text(item.year, 31, y + 1.5, { align: 'center' });
-
-      // Label
-      doc.setTextColor(...COLORS.white);
-      doc.setFontSize(7.5);
-      doc.setFont('helvetica', 'bold');
-      doc.text(item.label, 45, y + 1.5);
-
-      y += 5;
-
-      // Description
-      doc.setTextColor(...COLORS.muted);
-      doc.setFontSize(6.5);
-      doc.setFont('helvetica', 'normal');
-      const lines = doc.splitTextToSize(item.desc, 140);
-      doc.text(lines, 20, y + 1);
-      y += lines.length * 3.5 + 3;
-    });
-
-    y += 4;
-  });
-
-  // --- EDUCATION section ---
-  if (y > 235) {
-    addNewPage(doc);
-    y = 15;
-  }
-
-  doc.setFillColor(...COLORS.headerBg);
-  doc.rect(0, y - 3, W, 8, 'F');
-  doc.setTextColor(...COLORS.emerald);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'bold');
-  doc.text(lang === 'es' ? '▶ EDUCACIÓN' : '▶ EDUCATION', 15, y + 2);
-  doc.setTextColor(...COLORS.muted);
-  doc.setFontSize(6);
-  doc.text('COMP: Education.comp', W - 50, y + 2);
-
-  y += 12;
-
-  t.edu_data.forEach((edu) => {
-    if (y > 275) {
-      addNewPage(doc);
-      y = 15;
-    }
-
-    // Year
-    doc.setFillColor(...COLORS.premiere);
-    doc.rect(15, y - 1, 2, 5, 'F');
-    doc.setTextColor(...COLORS.premiere);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text(edu.year, 20, y + 2);
-
-    // Label
     doc.setTextColor(...COLORS.white);
     doc.setFontSize(7.5);
     doc.setFont('helvetica', 'bold');
-    doc.text(edu.label, 35, y + 2);
-
-    y += 9;
-  });
-
-  // --- TECH SKILLS section ---
-  if (y > 220) {
-    addNewPage(doc);
-    y = 15;
-  }
-
-  y += 5;
-  doc.setFillColor(...COLORS.headerBg);
-  doc.rect(0, y - 3, W, 8, 'F');
-  doc.setTextColor(...COLORS.davinci);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'bold');
-  doc.text(lang === 'es' ? '▶ PIPELINE TECNOLÓGICO' : '▶ TECH PIPELINE', 15, y + 2);
-
-  y += 12;
-
-  // Skills in two columns
-  const colW = 85;
-  t.techSkills.forEach((skill, idx) => {
-    if (y > 275) {
-      addNewPage(doc);
-      y = 15;
-    }
-    const col = idx % 2;
-    const sx = 15 + col * colW;
-    const sy = y;
+    doc.text(exp.title.toUpperCase(), 16, y + 1.5);
 
     doc.setTextColor(...COLORS.muted);
-    doc.setFontSize(7);
+    doc.setFontSize(6);
+    doc.text(`${exp.company}  |  ${exp.period}`, 16, y + 5);
+    y += 7;
+
+    // Condensed: show only key entries (max 3, short desc)
+    const entries = exp.fullHistory.slice(0, 3);
+    entries.forEach((item) => {
+      // Year + Label on one line
+      doc.setTextColor(...COLORS.premiere);
+      doc.setFontSize(5.5);
+      doc.setFont('helvetica', 'bold');
+      doc.text(item.year, 16, y + 1);
+      
+      doc.setTextColor(...COLORS.white);
+      doc.setFontSize(6);
+      doc.text(item.label, 38, y + 1);
+      
+      // Short description
+      doc.setTextColor(...COLORS.muted);
+      doc.setFontSize(5.5);
+      doc.setFont('helvetica', 'normal');
+      const shortDesc = item.desc.length > 80 ? item.desc.substring(0, 77) + '...' : item.desc;
+      doc.text(shortDesc, 16, y + 4.5);
+      y += 7;
+    });
+
+    y += 2;
+  });
+
+  // --- EDUCATION section ---
+  doc.setFillColor(...COLORS.headerBg);
+  doc.rect(0, y - 2, W, 6, 'F');
+  doc.setTextColor(...COLORS.emerald);
+  doc.setFontSize(7.5);
+  doc.setFont('helvetica', 'bold');
+  doc.text(lang === 'es' ? '▶ EDUCACIÓN' : '▶ EDUCATION', 12, y + 1.5);
+
+  y += 8;
+
+  // Education in two columns for space saving
+  const eduColW = 90;
+  t.edu_data.forEach((edu, idx) => {
+    const col = idx % 2;
+    const ex = 12 + col * eduColW;
+    const ey = y + Math.floor(idx / 2) * 6;
+
+    doc.setFillColor(...COLORS.premiere);
+    doc.rect(ex, ey - 0.5, 1.5, 4, 'F');
+    doc.setTextColor(...COLORS.premiere);
+    doc.setFontSize(6.5);
+    doc.setFont('helvetica', 'bold');
+    doc.text(edu.year, ex + 3, ey + 2);
+
+    doc.setTextColor(...COLORS.white);
+    doc.setFontSize(6);
+    doc.text(edu.label, ex + 14, ey + 2);
+  });
+  y += Math.ceil(t.edu_data.length / 2) * 6 + 4;
+
+  // --- TECH SKILLS section (two columns) ---
+  doc.setFillColor(...COLORS.headerBg);
+  doc.rect(0, y - 2, W, 6, 'F');
+  doc.setTextColor(...COLORS.davinci);
+  doc.setFontSize(7.5);
+  doc.setFont('helvetica', 'bold');
+  doc.text(lang === 'es' ? '▶ PIPELINE TECNOLÓGICO' : '▶ TECH PIPELINE', 12, y + 1.5);
+
+  y += 8;
+
+  const colW = 90;
+  t.techSkills.forEach((skill, idx) => {
+    const col = idx % 2;
+    const sx = 12 + col * colW;
+    const sy = y + Math.floor(idx / 2) * 5.5;
+
+    doc.setTextColor(...COLORS.muted);
+    doc.setFontSize(6);
     doc.setFont('helvetica', 'normal');
     doc.text(skill.n, sx, sy);
 
     doc.setTextColor(...COLORS.davinci);
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'bold');
-    doc.text(skill.v, sx + 55, sy);
-
-    // Progress bar
-    const barW = skill.v === 'EXPERT' || skill.v === 'EXPERTO' ? 55 : skill.v === 'PRO' ? 48 : 40;
-    doc.setFillColor(...COLORS.headerBg);
-    doc.rect(sx, sy + 1.5, 60, 1.5, 'F');
-    doc.setFillColor(...COLORS.davinci);
-    doc.rect(sx, sy + 1.5, barW, 1.5, 'F');
-
-    if (col === 1) y += 8;
-  });
-  if (t.techSkills.length % 2 !== 0) y += 8;
-
-  // --- GEN-AI section ---
-  y += 5;
-  doc.setTextColor(...COLORS.aftereffects);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'bold');
-  doc.text(`✦ ${t.genAiEngine.toUpperCase()}`, 15, y);
-
-  y += 5;
-  t.genAiModels.forEach((model, idx) => {
-    const col = idx % 3;
-    const mx = 15 + col * 30;
-    doc.setFillColor(40, 30, 50);
-    doc.roundedRect(mx, y, 26, 5, 1, 1, 'F');
-    doc.setTextColor(...COLORS.aftereffects);
     doc.setFontSize(6);
     doc.setFont('helvetica', 'bold');
-    doc.text(model, mx + 13, y + 3.5, { align: 'center' });
-    if (col === 2) y += 7;
+    doc.text(skill.v, sx + 45, sy);
+
+    // Mini progress bar
+    const barW = skill.v === 'EXPERT' || skill.v === 'EXPERTO' ? '95' : skill.v === 'PRO' ? '85' : skill.v === 'MID' ? '70' : '50';
+    doc.setFillColor(...COLORS.headerBg);
+    doc.rect(sx, sy + 1, 50, 1, 'F');
+    doc.setFillColor(...COLORS.davinci);
+    doc.rect(sx, sy + 1, parseFloat(barW) / 100 * 50, 1, 'F');
   });
+  y += Math.ceil(t.techSkills.length / 2) * 5.5 + 3;
+
+  // --- GEN-AI section ---
+  doc.setTextColor(...COLORS.aftereffects);
+  doc.setFontSize(6.5);
+  doc.setFont('helvetica', 'bold');
+  doc.text(`✦ ${t.genAiEngine.toUpperCase()}`, 12, y);
+
+  y += 4;
+  t.genAiModels.forEach((model, idx) => {
+    const col = idx % 4;
+    const mx = 12 + col * 24;
+    const my = y + Math.floor(idx / 4) * 5;
+    doc.setFillColor(40, 30, 50);
+    doc.roundedRect(mx, my, 22, 4, 1, 1, 'F');
+    doc.setTextColor(...COLORS.aftereffects);
+    doc.setFontSize(5.5);
+    doc.setFont('helvetica', 'bold');
+    doc.text(model, mx + 11, my + 2.8, { align: 'center' });
+  });
+  y += Math.ceil(t.genAiModels.length / 4) * 5 + 4;
+
+  // --- BROADCAST SYSTEMS ---
+  doc.setTextColor(...COLORS.emerald);
+  doc.setFontSize(6.5);
+  doc.setFont('helvetica', 'bold');
+  doc.text(`▶ ${t.broadcastSys.toUpperCase()}`, 12, y);
+  y += 4;
+
+  let bx = 12;
+  t.broadcastSystemsList.forEach((sys) => {
+    const tw = doc.getTextWidth(sys) + 4;
+    if (bx + tw > W - 12) { bx = 12; y += 5; }
+    doc.setFillColor(...COLORS.headerBg);
+    doc.roundedRect(bx, y - 1, tw, 4, 0.5, 0.5, 'F');
+    doc.setTextColor(...COLORS.emerald);
+    doc.setFontSize(5);
+    doc.setFont('helvetica', 'bold');
+    doc.text(sys, bx + 2, y + 1.5);
+    bx += tw + 2;
+  });
+  y += 7;
 
   // --- SOFT SKILLS section ---
-  y += 12;
-  if (y > 260) {
-    addNewPage(doc);
-    y = 15;
-  }
-
   doc.setFillColor(...COLORS.headerBg);
-  doc.rect(0, y - 3, W, 8, 'F');
+  doc.rect(0, y - 2, W, 6, 'F');
   doc.setTextColor(...COLORS.emerald);
-  doc.setFontSize(9);
+  doc.setFontSize(7.5);
   doc.setFont('helvetica', 'bold');
-  doc.text(lang === 'es' ? '▶ SOFT SKILLS / METADATA' : '▶ SOFT SKILLS / METADATA', 15, y + 2);
+  doc.text(lang === 'es' ? '▶ SOFT SKILLS / METADATA' : '▶ SOFT SKILLS / METADATA', 12, y + 1.5);
 
-  y += 12;
+  y += 8;
   const softSkillsData = [
     { label: t.soft_skills.english, value: t.skill_levels.weak },
     { label: t.soft_skills.creativity, value: t.skill_levels.native },
@@ -280,49 +251,45 @@ export const generateCV = (lang: 'es' | 'en') => {
     { label: t.soft_skills.adapt, value: t.skill_levels.shifts },
   ];
 
-  softSkillsData.forEach((skill) => {
+  // Two columns for soft skills
+  softSkillsData.forEach((skill, idx) => {
+    const col = idx % 2;
+    const sx = 12 + col * 95;
+    const sy = y + Math.floor(idx / 2) * 5;
+
     doc.setTextColor(...COLORS.muted);
-    doc.setFontSize(7);
+    doc.setFontSize(6);
     doc.setFont('helvetica', 'normal');
-    doc.text(skill.label, 15, y);
+    doc.text(skill.label, sx, sy);
 
     doc.setTextColor(...COLORS.emerald);
-    doc.setFontSize(7);
+    doc.setFontSize(6);
     doc.setFont('helvetica', 'bold');
-    doc.text(skill.value, 80, y);
-
-    y += 6;
+    doc.text(skill.value, sx + 40, sy);
   });
+  y += Math.ceil(softSkillsData.length / 2) * 5 + 2;
 
   // --- Footer ---
-  y = H - 15;
+  const footerY = H - 12;
   doc.setFillColor(...COLORS.panelBg);
-  doc.rect(0, y - 2, W, 17, 'F');
+  doc.rect(0, footerY - 2, W, 14, 'F');
 
   doc.setFillColor(...COLORS.premiere);
   doc.rect(0, H - 2, W, 2, 'F');
 
   doc.setTextColor(...COLORS.muted);
-  doc.setFontSize(6);
-  doc.text('SYSTEM: RENDER COMPLETE  |  GPU: Mercury Engine (Metal)  |  FORMAT: PDF/A4  |  FPS: 23.976', W / 2, y + 3, { align: 'center' });
+  doc.setFontSize(5);
+  doc.text('SYSTEM: RENDER COMPLETE  |  GPU: Mercury Engine (Metal)  |  FORMAT: PDF/A4  |  FPS: 23.976', W / 2, footerY + 2, { align: 'center' });
 
   doc.setTextColor(...COLORS.premiere);
-  doc.setFontSize(7);
+  doc.setFontSize(6.5);
   doc.setFont('helvetica', 'bold');
-  doc.text('TANIA SALVATELLA  —  CV 2026', W / 2, y + 8, { align: 'center' });
+  doc.text('TANIA SALVATELLA  —  CV 2026', W / 2, footerY + 6, { align: 'center' });
 
   doc.setTextColor(...COLORS.muted);
-  doc.setFontSize(5);
-  doc.text(lang === 'es' ? 'Generado desde CV Interactivo — Pro-Tool Metafor' : 'Generated from Interactive CV — Pro-Tool Metaphor', W / 2, y + 12, { align: 'center' });
+  doc.setFontSize(4.5);
+  doc.text(lang === 'es' ? 'Generado desde CV Interactivo — Pro-Tool Metafor' : 'Generated from Interactive CV — Pro-Tool Metaphor', W / 2, footerY + 9.5, { align: 'center' });
 
   // Save
   doc.save(`CV_Tania_Salvatella_${lang.toUpperCase()}.pdf`);
 };
-
-function addNewPage(doc: jsPDF) {
-  doc.addPage();
-  doc.setFillColor(...COLORS.bg);
-  doc.rect(0, 0, 210, 297, 'F');
-  doc.setFillColor(...COLORS.premiere);
-  doc.rect(0, 0, 210, 1.5, 'F');
-}

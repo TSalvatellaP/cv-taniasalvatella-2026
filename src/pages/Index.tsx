@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   Play, Pause, SkipBack, SkipForward, Settings, Sparkles,
   Monitor, Maximize2, Volume2,
@@ -9,7 +9,8 @@ import {
   Layers2, Languages, BookOpen, BrainCircuit, Users, MessageSquare, Video, Search,
   WifiOff, Mic, Image as ImageIcon, MonitorPlay, Info,
   Layers, Anchor, RotateCw, Smartphone, ArrowLeft,
-  Scissors, Type, Wand2, Plus, Undo2, ScissorsLineDashed
+  Scissors, Type, Wand2, Plus, Undo2, ScissorsLineDashed,
+  Network
 } from 'lucide-react';
 import { generateCV } from '@/utils/generateCV';
 import { translations, type ExperienceItem } from '@/data/translations';
@@ -51,7 +52,24 @@ const Index = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeMode, setActiveMode] = useState<Mode>('editing');
   const [isGlitching, setIsGlitching] = useState(false);
-  const [selectedExp, setSelectedExp] = useState<ExperienceItem | null>(null);
+  const [selectedExpId, setSelectedExpId] = useState<string | null>(null);
+  
+  // Derive selectedExp from ID for language switching persistence
+  const selectedExp = useMemo(() => {
+    if (!selectedExpId) return null;
+    let found = t.exp_data.find(e => e.id === selectedExpId);
+    if (found) return found;
+    found = t.art_data.find(a => a.id === selectedExpId);
+    if (found) return found;
+    if (selectedExpId === 'edu_comp') return { type: 'education', id: 'edu_comp', title: t.eduComp } as any;
+    return null;
+  }, [selectedExpId, t]);
+  
+  const setSelectedExp = (exp: any) => {
+    if (exp === null) { setSelectedExpId(null); return; }
+    setSelectedExpId(exp.id || null);
+  };
+
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const [currentFolder, setCurrentFolder] = useState('root');
@@ -63,6 +81,7 @@ const Index = () => {
   const [showToast, setShowToast] = useState(false);
   const [isDragOverMonitor, setIsDragOverMonitor] = useState(false);
   const [monitorFormat, setMonitorFormat] = useState<'landscape' | 'portrait'>('landscape');
+  const [mobileTab, setMobileTab] = useState<'bin' | 'monitor' | 'timeline' | 'inspector'>('monitor');
 
   // AE layer expansion & dragging
   const [expandedAeLayers, setExpandedAeLayers] = useState<Record<string, boolean>>({ motion: true });
@@ -281,10 +300,10 @@ const Index = () => {
   ];
 
   const tabs = activeMode === 'color'
-    ? [{ id: 'project', label: lang === 'es' ? 'Galería' : 'Gallery' }, { id: 'skills', label: lang === 'es' ? 'Contenedor Medios' : 'Media Pool' }]
+    ? [{ id: 'project', label: t.gallery }, { id: 'skills', label: t.media_pool }]
     : activeMode === 'effects'
-    ? [{ id: 'project', label: lang === 'es' ? 'Proyecto' : 'Project' }, { id: 'skills', label: lang === 'es' ? 'Librería Activos' : 'Assets Library' }]
-    : [{ id: 'project', label: lang === 'es' ? 'Bandeja Proyecto' : 'Project Bin' }, { id: 'skills', label: lang === 'es' ? 'Navegador Medios' : 'Media Browser' }];
+    ? [{ id: 'project', label: t.project }, { id: 'skills', label: t.assets_lib }]
+    : [{ id: 'project', label: t.project_bin }, { id: 'skills', label: t.media_browser }];
 
   const isEducationSelected = selectedExp?.type === 'education' || selectedExp?.id === 'edu_comp';
   const isVideoSelected = selectedExp?.type === 'video';
@@ -323,95 +342,230 @@ const Index = () => {
 
       {showExportModal && <ExportModal onClose={() => setShowExportModal(false)} lang={lang} />}
 
-      {/* ========== MOBILE CREATOR MODE ========== */}
-      <div className="md:hidden flex flex-col h-screen bg-black text-foreground overflow-hidden relative">
-        <div className="flex justify-between items-center px-4 py-3 z-20">
+      {/* ========== MOBILE PRO INTERFACE (Tabbed) ========== */}
+      <div className="md:hidden flex flex-col h-screen bg-[#1A1A1A] text-white overflow-hidden relative">
+        {/* Mobile Header */}
+        <div className="flex justify-between items-center px-4 py-2 z-20 bg-[#2D2D2D] border-b border-black shrink-0 h-12">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-orange-400 p-[2px]">
-              <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                <span className="font-black text-[10px]">TS</span>
+            <div className="w-6 h-6 rounded bg-gradient-to-tr from-purple-500 to-orange-400 p-[1px]">
+              <div className="w-full h-full rounded bg-black flex items-center justify-center">
+                <span className="font-black text-[9px]">TS</span>
               </div>
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-bold leading-none">Tania Salvatella</span>
-              <span className="text-[10px] text-muted-foreground leading-none">Creator Mode</span>
+              <span className="text-[10px] font-bold leading-none truncate max-w-[120px]">Tania Salvatella</span>
+              <span className="text-[8px] text-gray-400 leading-none">CV_2026.prproj</span>
             </div>
           </div>
-          <button onClick={() => setShowExportModal(true)} className="bg-premiere text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg active:scale-95 transition-transform">
-            <Share size={12} fill="currentColor" /> {t.export}
-          </button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setMonitorFormat(prev => prev === 'landscape' ? 'portrait' : 'landscape')}
+              className="p-1.5 rounded bg-black/20 hover:bg-white/10 border border-white/5 transition-colors">
+              {monitorFormat === 'landscape' ? <Smartphone size={14} className="text-gray-400" /> : <Monitor size={14} className="text-white" />}
+            </button>
+            <button onClick={() => setShowExportModal(true)}
+              className="bg-premiere text-white p-1.5 rounded-sm text-xs font-bold flex items-center gap-1 shadow-lg active:scale-95 transition-transform">
+              <Share size={14} fill="currentColor" />
+            </button>
+          </div>
         </div>
 
-        <div className="flex-1 relative mx-2 my-1 bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-          <div className="absolute inset-0 flex items-center justify-center bg-black">
-            <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 via-black to-zinc-900 opacity-50"></div>
-              <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '33.33% 33.33%' }}></div>
-              <div className="z-10 text-center p-6 space-y-4 w-full">
-                {selectedExp ? (
-                  <div className="animate-in zoom-in duration-300">
-                    {selectedExp.type === 'video' ? (
-                      <div className="aspect-[9/16] w-full bg-zinc-800 rounded-lg overflow-hidden relative mb-4">
-                        <div className="absolute inset-0 opacity-40" style={{ background: selectedExp.color }}></div>
-                        <div className="absolute inset-0 flex items-center justify-center"><Play size={48} fill="white" className="text-white opacity-80" /></div>
-                      </div>
-                    ) : (
-                      <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                        {selectedExp.iconName ? getExpIcon(selectedExp.iconName, 32) : <Layers size={32} className="text-white" />}
+        {/* Mobile Content Area */}
+        <div className="flex-1 relative overflow-hidden bg-black">
+          {/* TAB: BIN */}
+          {mobileTab === 'bin' && (
+            <div className="absolute inset-0 flex flex-col bg-[#232323] overflow-y-auto">
+              <div className="px-4 py-2 bg-[#2D2D2D] border-b border-black text-[10px] font-bold text-gray-400 uppercase tracking-widest sticky top-0">{t.project_bin}</div>
+              <div className="p-2 space-y-1">
+                {t.exp_data.map(exp => (
+                  <div key={exp.id} onClick={() => { setSelectedExpId(exp.id); setMobileTab('monitor'); setIsPlaying(true); }}
+                    className="flex items-center p-3 rounded bg-[#333] border border-black/20 active:bg-premiere active:text-white transition-colors">
+                    {exp.id === 'motion' ? <PrSequenceIcon /> : <Film size={16} className="mr-2 text-gray-400" />}
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold">{exp.title}</span>
+                      <span className="text-[9px] opacity-60">{exp.company}</span>
+                    </div>
+                    <ChevronRight size={14} className="ml-auto opacity-50" />
+                  </div>
+                ))}
+                <div onClick={() => { setSelectedExpId('edu_comp'); setMobileTab('monitor'); }}
+                  className="flex items-center p-3 rounded bg-[#333] border border-black/20 active:bg-emerald-500 active:text-white transition-colors mt-4">
+                  <GraduationCap size={16} className="mr-2 text-emerald-400" />
+                  <span className="text-xs font-bold">{t.eduComp}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: MONITOR */}
+          {mobileTab === 'monitor' && (
+            <div className="absolute inset-0 flex flex-col bg-black">
+              <div className={`relative flex-1 flex items-center justify-center overflow-hidden ${monitorFormat === 'portrait' ? 'p-0' : 'p-2'}`}>
+                <div className={`relative overflow-hidden shadow-2xl flex flex-col items-center justify-center transition-all duration-300
+                  ${monitorFormat === 'landscape' ? 'w-full aspect-video bg-black' : 'h-full aspect-[9/16] bg-black'}`}>
+                  <div className="absolute inset-0 z-0 opacity-10 pointer-events-none flex items-center justify-center">
+                    <div className="w-[90%] h-[90%] border border-white/20 rounded-sm"></div>
+                    <Crosshair size={24} className="text-white opacity-20" />
+                  </div>
+                  {selectedExp && selectedExp.type !== 'video' && selectedExp.type !== 'education' && (
+                    <ExperienceDetailMonitor experience={selectedExp} onClose={() => setSelectedExpId(null)} accentColor={headerInfo.accent} mode={activeMode} getExpIcon={getExpIcon} />
+                  )}
+                  <div className="text-center z-10 space-y-2 px-4 relative w-full flex flex-col items-center justify-center h-full">
+                    {!selectedExp && (
+                      <>
+                        <h1 className={`font-black tracking-tighter text-white uppercase leading-none transition-all duration-300 ${monitorFormat === 'landscape' ? 'text-4xl' : 'text-3xl flex flex-col items-center gap-1'}`}>
+                          <span>Tania</span><span>Salvatella</span>
+                        </h1>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-[0.3em] mt-2">{t.job_title}</p>
+                      </>
+                    )}
+                    {selectedExp?.type === 'education' && (
+                      <div className="w-full h-full p-4 overflow-y-auto">
+                        <h2 className="text-2xl font-black text-white mb-4">{t.education_title}</h2>
+                        {t.edu_data.map((edu, i) => (
+                          <div key={i} className="mb-4 text-left border-l-2 border-emerald-500 pl-3">
+                            <div className="text-emerald-400 font-bold text-lg">{edu.year}</div>
+                            <div className="text-white text-xs leading-tight">{edu.label}</div>
+                          </div>
+                        ))}
                       </div>
                     )}
-                    <h2 className="text-2xl font-black uppercase tracking-tighter text-foreground leading-none">{selectedExp.title}</h2>
-                    <p className="text-sm text-muted-foreground font-medium mt-2">{selectedExp.company}</p>
-                    <div className="inline-block mt-4 px-3 py-1 bg-white/10 rounded-full text-[10px] font-mono border border-white/10">{selectedExp.period}</div>
+                    {selectedExp?.type === 'video' && (
+                      <div className="text-center">
+                        <h2 className="text-xl font-black text-white uppercase">{selectedExp.title}</h2>
+                        <p className="text-xs text-gray-400 mt-1">{selectedExp.duration}</p>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="space-y-4">
-                    <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 uppercase tracking-tighter leading-[0.85]">Tania<br />Salvatella</h1>
-                    <p className="text-sm text-muted-foreground font-light tracking-widest uppercase">Editor | Motion | AI</p>
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center z-20">
+                    <SkipBack size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))} />
+                    <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg active:scale-95">
+                      {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" className="ml-1" />}
+                    </button>
+                    <SkipForward size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.min(100, playheadPos + 10))} />
                   </div>
-                )}
+                </div>
               </div>
-              <div className="absolute top-4 right-4 text-[10px] font-black text-white/20 uppercase tracking-widest rotate-90 origin-top-right">PORTFOLIO_OS</div>
             </div>
-          </div>
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-6">
-            <button onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))}><SkipBack size={24} className="text-foreground" /></button>
-            <button onClick={() => setIsPlaying(!isPlaying)} className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black shadow-xl active:scale-95 transition-transform">
-              {isPlaying ? <Pause size={28} fill="black" /> : <Play size={28} fill="black" className="ml-1" />}
-            </button>
-            <button onClick={() => setPlayheadPos(Math.min(100, playheadPos + 10))}><SkipForward size={24} className="text-foreground" /></button>
-          </div>
+          )}
+
+          {/* TAB: TIMELINE */}
+          {mobileTab === 'timeline' && (
+            <div className="absolute inset-0 flex flex-col bg-[#1F1F1F] p-2 overflow-hidden">
+              <div className="px-2 py-1 flex justify-between text-[10px] text-gray-400 border-b border-black mb-2">
+                <span>00:00:00:00</span>
+                <span className="text-premiere">{getTimecode(playheadPos)}</span>
+                <span>00:15:20:00</span>
+              </div>
+              <div className="flex-1 relative overflow-x-auto bg-[#1A1A1A] border border-white/5 rounded">
+                <div className="space-y-1 p-1 min-w-[600px]">
+                  <div className="h-10 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">V1</div>
+                    <div className="flex-1 ml-8 flex overflow-hidden">
+                      {t.edu_data.map((edu, idx) => (
+                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative bg-emerald-800/60">
+                          <span className="absolute top-0.5 left-1 text-[7px] text-emerald-100 font-bold truncate w-full">{edu.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="h-10 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">V2</div>
+                    <div className="flex-1 ml-8 flex overflow-hidden">
+                      {softSkills.map((skill) => (
+                        <div key={skill.id} className="flex-1 border-r border-black/50 h-full relative" style={{ backgroundColor: `${skill.color}40` }}>
+                          <span className="absolute top-0.5 left-1 text-[7px] text-white font-bold truncate w-full">{skill.title}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="h-8 bg-[#262626] relative flex items-center overflow-hidden rounded-sm opacity-60">
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">V3</div>
+                    <div className="flex-1 ml-8 flex bg-black/20 items-center justify-center">
+                      <span className="text-[8px] text-gray-600 font-mono tracking-widest">{t.empty_track}</span>
+                    </div>
+                  </div>
+                  <div className="h-10 bg-[#262626] relative flex items-center overflow-hidden rounded-sm mt-1">
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">A1</div>
+                    <div className="flex-1 ml-8 flex bg-teal-900/40">
+                      <svg className="w-full h-full opacity-50" preserveAspectRatio="none" viewBox="0 0 100 100">
+                        <path d="M0 50 L10 40 L20 60 L30 30 L40 70 L50 20 L60 80 L70 40 L80 60 L90 45 L100 50" fill="none" stroke="#2dd4bf" strokeWidth="2"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute top-0 bottom-0 w-[2px] bg-red-500 z-30" style={{ left: `${playheadPos}%` }}></div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: INSPECTOR */}
+          {mobileTab === 'inspector' && (
+            <div className="absolute inset-0 bg-[#232323] p-4 overflow-y-auto custom-scrollbar">
+              <div className="mb-4">
+                <h3 className="text-xs font-bold text-gray-400 uppercase mb-2">{t.selected_item}</h3>
+                <div className="bg-[#1A1A1A] p-3 rounded border border-white/5">
+                  <span className="text-sm font-bold text-white block">{selectedExp ? selectedExp.title : t.no_clip}</span>
+                  <span className="text-xs text-gray-500">{selectedExp ? selectedExp.company : t.select_hint}</span>
+                </div>
+              </div>
+              <div className="mb-4">
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase mb-3 text-blue-400"><Code size={12} /> {t.techPipeline}</div>
+                <div className="space-y-1.5">
+                  {t.techSkills.map(s => (
+                    <div key={s.n} className="bg-black/30 p-2 rounded border border-white/5 text-[9px] text-gray-400 flex justify-between items-center">
+                      <span>{s.n}</span>
+                      <span className="text-[7px] text-blue-500 font-bold px-1.5 border border-blue-500/20 rounded-full">{s.v}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <div className="flex items-center gap-2 text-[10px] text-purple-300 font-black uppercase mb-3"><Sparkles size={12} /> {t.genAiEngine}</div>
+                <div className="grid grid-cols-2 gap-1">
+                  {t.genAiModels.map(item => (
+                    <div key={item} className="bg-purple-500/10 border border-purple-500/20 text-[8px] text-center py-1.5 text-purple-300 rounded font-bold uppercase tracking-tighter">{item}</div>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <div className="flex items-center gap-2 text-[10px] text-green-400 font-black uppercase mb-3"><Network size={12} /> {t.broadcastSys}</div>
+                <div className="flex flex-wrap gap-1">
+                  {t.broadcastSystemsList.map(item => (
+                    <div key={item} className="bg-green-500/10 border border-green-500/20 text-[8px] py-1 px-2 text-green-300 rounded font-bold uppercase tracking-tight">{item}</div>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <h3 className="text-xs font-bold text-gray-500 uppercase mb-2">{t.tech_specs}</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-[#1A1A1A] p-2 rounded text-center">
+                    <span className="text-[9px] text-gray-500 block">{t.frame_rate}</span>
+                    <span className="text-xs font-mono text-white">23.976</span>
+                  </div>
+                  <div className="bg-[#1A1A1A] p-2 rounded text-center">
+                    <span className="text-[9px] text-gray-500 block">{t.resolution}</span>
+                    <span className="text-xs font-mono text-white">3840x2160</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="h-32 bg-[#111] rounded-t-2xl p-4 flex flex-col gap-3 z-30 border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
-          <div className="flex justify-between items-center px-1">
-            <span className="text-[10px] font-bold text-muted-foreground uppercase">{getTimecode(playheadPos)}</span>
-            <div className="flex gap-4">
-              <Undo2 size={16} className="text-muted-foreground" />
-              <ScissorsLineDashed size={16} className="text-muted-foreground" />
-              <Plus size={16} className="text-foreground" />
-            </div>
-          </div>
-          <div className="flex overflow-x-auto gap-3 pb-2 no-scrollbar snap-x">
-            {t.exp_data.map((exp) => (
-              <div key={exp.id} onClick={() => setSelectedExp(exp)}
-                className={`flex-shrink-0 w-24 h-16 rounded-lg bg-zinc-800 relative overflow-hidden border snap-center transition-all ${selectedExp?.id === exp.id ? 'border-white ring-2 ring-premiere/50' : 'border-white/10 opacity-60'}`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-black/50"></div>
-                <div className="absolute bottom-1 left-1 right-1 text-[8px] font-bold truncate text-white leading-tight">{exp.title}</div>
-                <div className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ background: exp.labelPr || '#fff' }}></div>
-              </div>
-            ))}
-            <div className="flex-shrink-0 w-12 h-16 rounded-lg border border-white/10 border-dashed flex items-center justify-center">
-              <Plus size={20} className="text-muted-foreground" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-black py-3 px-6 flex justify-between items-center border-t border-white/10 text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-          <div className="flex flex-col items-center gap-1 text-foreground"><Scissors size={18} /><span>Edit</span></div>
-          <div className="flex flex-col items-center gap-1"><Layers size={18} /><span>Overlay</span></div>
-          <div className="flex flex-col items-center gap-1"><Type size={18} /><span>Text</span></div>
-          <div className="flex flex-col items-center gap-1"><Wand2 size={18} /><span>Effects</span></div>
+        {/* Mobile Bottom Tab Bar */}
+        <div className="h-14 bg-[#111] border-t border-white/10 flex items-center justify-around shrink-0 z-30">
+          <button onClick={() => setMobileTab('bin')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'bin' ? 'text-premiere' : 'text-gray-500'}`}>
+            <Folder size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_bin}</span>
+          </button>
+          <button onClick={() => setMobileTab('monitor')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'monitor' ? 'text-premiere' : 'text-gray-500'}`}>
+            <MonitorPlay size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_monitor}</span>
+          </button>
+          <button onClick={() => setMobileTab('timeline')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'timeline' ? 'text-premiere' : 'text-gray-500'}`}>
+            <Scissors size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_timeline}</span>
+          </button>
+          <button onClick={() => setMobileTab('inspector')} className={`flex flex-col items-center gap-1 p-2 ${mobileTab === 'inspector' ? 'text-premiere' : 'text-gray-500'}`}>
+            <Sliders size={18} /><span className="text-[8px] font-bold uppercase">{t.mob_info}</span>
+          </button>
         </div>
       </div>
 
@@ -715,7 +869,7 @@ const Index = () => {
                     <div className={`inline-block px-4 py-1 rounded text-[8px] md:text-[10px] font-black text-foreground uppercase tracking-[0.3em] shadow-lg transition-all duration-500 mb-8 ${
                       signalStatus === 'LIVE' ? (isPlaying ? (activeMode === 'color' ? 'bg-davinci animate-pulse' : 'bg-emerald-600 animate-pulse') : 'bg-premiere/30 border border-premiere/20') :
                       (signalStatus === 'POOR' ? 'bg-yellow-600/80' : 'bg-red-600/80')} ${monitorFormat === 'portrait' ? 'scale-75 mb-4' : ''}`}>
-                      {signalStatus === 'LIVE' ? (isPlaying ? t.playing : t.paused) : signalStatus === 'POOR' ? 'WEAK SIGNAL' : 'NO SIGNAL'}
+                      {signalStatus === 'LIVE' ? (isPlaying ? t.playing : t.paused) : signalStatus === 'POOR' ? t.weak_signal : t.no_signal}
                     </div>
 
                     <div className={`transition-all duration-500 relative ${signalStatus === 'POOR' ? 'signal-pixelated' : ''} ${signalStatus === 'FROZEN' ? 'signal-frozen' : ''}`}>
@@ -782,7 +936,7 @@ const Index = () => {
                 {activeMode === 'color' ? <Layers2 size={12} className="text-davinci" /> : <Sliders size={12} className={activeMode === 'effects' ? 'text-aftereffects' : 'text-premiere'} />}
                 <span>{activeMode === 'color' ? t.nodes : t.inspector}</span>
               </div>
-              <button className="text-[7px] text-muted-foreground uppercase hover:text-foreground transition-colors">{lang === 'es' ? 'Resetear' : 'Reset'}</button>
+              <button className="text-[7px] text-muted-foreground uppercase hover:text-foreground transition-colors">{t.reset}</button>
             </div>
             <TechSkillsList t={t} activeMode={activeMode} />
           </div>
@@ -865,6 +1019,14 @@ const TechSkillsList = ({ t, activeMode }: { t: any; activeMode: Mode }) => (
       <div className="grid grid-cols-2 gap-1.5">
         {t.genAiModels.map((item: string) => (
           <div key={item} className="bg-aftereffects/10 border border-aftereffects/20 text-[8px] text-center py-1.5 text-aftereffects rounded font-bold uppercase tracking-tighter hover:bg-aftereffects/20 cursor-default">{item}</div>
+        ))}
+      </div>
+    </div>
+    <div className="pt-4">
+      <div className="flex items-center gap-2 text-[10px] text-emerald-400 font-black uppercase mb-3"><Network size={12} /> {t.broadcastSys}</div>
+      <div className="flex flex-wrap gap-1">
+        {t.broadcastSystemsList?.map((item: string) => (
+          <div key={item} className="bg-emerald-500/10 border border-emerald-500/20 text-[7px] py-1 px-1.5 text-emerald-300 rounded font-bold uppercase tracking-tight cursor-default">{item}</div>
         ))}
       </div>
     </div>
