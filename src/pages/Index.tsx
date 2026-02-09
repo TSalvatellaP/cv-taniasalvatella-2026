@@ -456,36 +456,52 @@ const Index = () => {
                 <span className="text-premiere">{getTimecode(playheadPos)}</span>
                 <span>00:15:20:00</span>
               </div>
-              <div className="flex-1 relative overflow-x-auto bg-[#1A1A1A] border border-white/5 rounded">
-                <div className="space-y-1 p-1 min-w-[600px]">
-                  <div className="h-10 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">V1</div>
+              <div className="flex-1 relative overflow-x-auto overflow-y-auto bg-[#1A1A1A] border border-white/5 rounded">
+                <div className="space-y-1 p-1 min-w-[500px]">
+                  {/* V1 — Artistic projects (first half) */}
+                  <div className="h-12 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">V1</div>
+                    <div className="flex-1 ml-8 flex overflow-hidden h-full">
+                      {t.art_data.slice(0, 3).map((art, idx) => (
+                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all"
+                          style={{ backgroundColor: `${art.color || art.labelPr}30` }}
+                          onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                          <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: art.color || art.labelPr }} />
+                          <span className="absolute top-1.5 left-1 text-[7px] font-bold truncate pr-1" style={{ color: art.color || art.labelPr }}>{art.title}</span>
+                          <span className="absolute bottom-1 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* V2 — Artistic projects (second half) */}
+                  <div className="h-12 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">V2</div>
+                    <div className="flex-1 ml-8 flex overflow-hidden h-full">
+                      {t.art_data.slice(3).map((art, idx) => (
+                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all"
+                          style={{ backgroundColor: `${art.color || art.labelPr}30` }}
+                          onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                          <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: art.color || art.labelPr }} />
+                          <span className="absolute top-1.5 left-1 text-[7px] font-bold truncate pr-1" style={{ color: art.color || art.labelPr }}>{art.title}</span>
+                          <span className="absolute bottom-1 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* C1 — Captions / Education */}
+                  <div className="h-8 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">C1</div>
                     <div className="flex-1 ml-8 flex overflow-hidden">
                       {t.edu_data.map((edu, idx) => (
-                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative bg-emerald-800/60">
-                          <span className="absolute top-0.5 left-1 text-[7px] text-emerald-100 font-bold truncate w-full">{edu.label}</span>
+                        <div key={idx} className="flex-1 border-r border-black/50 h-full relative bg-emerald-800/40">
+                          <span className="absolute top-0.5 left-1 text-[6px] text-emerald-200 font-bold truncate w-full pr-1">{edu.label}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="h-10 bg-[#262626] relative flex items-center overflow-hidden rounded-sm">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">V2</div>
-                    <div className="flex-1 ml-8 flex overflow-hidden">
-                      {softSkills.map((skill) => (
-                        <div key={skill.id} className="flex-1 border-r border-black/50 h-full relative" style={{ backgroundColor: `${skill.color}40` }}>
-                          <span className="absolute top-0.5 left-1 text-[7px] text-white font-bold truncate w-full">{skill.title}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="h-8 bg-[#262626] relative flex items-center overflow-hidden rounded-sm opacity-60">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">V3</div>
-                    <div className="flex-1 ml-8 flex bg-black/20 items-center justify-center">
-                      <span className="text-[8px] text-gray-600 font-mono tracking-widest">{t.empty_track}</span>
-                    </div>
-                  </div>
+                  {/* A1 — Audio waveform */}
                   <div className="h-10 bg-[#262626] relative flex items-center overflow-hidden rounded-sm mt-1">
-                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500">A1</div>
+                    <div className="absolute left-0 w-8 h-full bg-[#333] border-r border-black flex items-center justify-center text-[9px] font-bold text-gray-500 z-10">A1</div>
                     <div className="flex-1 ml-8 flex bg-teal-900/40">
                       <svg className="w-full h-full opacity-50" preserveAspectRatio="none" viewBox="0 0 100 100">
                         <path d="M0 50 L10 40 L20 60 L30 30 L40 70 L50 20 L60 80 L70 40 L80 60 L90 45 L100 50" fill="none" stroke="#2dd4bf" strokeWidth="2"/>
