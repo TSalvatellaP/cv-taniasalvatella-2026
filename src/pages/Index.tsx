@@ -614,27 +614,41 @@ const Index = () => {
                     {(() => {
                       const aeColors = ['#cc3333', '#cc33cc', '#3366cc', '#3366cc', '#3399cc', '#336633', '#33cc33', '#cc6633', '#cccc33', '#cc3399', '#6633cc', '#33cc66', '#336699'];
                       const allLayers = [
-                        ...t.exp_data.map((exp, i) => ({ name: exp.title, color: aeColors[i % aeColors.length], type: 'T', parent: 'None', id: exp.id })),
-                        ...t.art_data.slice(0, 4).map((art, i) => ({ name: art.title, color: aeColors[(i + 5) % aeColors.length], type: '★', parent: 'None', id: art.id })),
+                        ...t.exp_data.map((exp, i) => ({ name: exp.title, color: aeColors[i % aeColors.length], type: 'T', parentLabel: 'None', id: exp.id, url: null as string | null, item: exp })),
+                        ...t.art_data.slice(0, 4).map((art, i) => ({ name: art.title, color: aeColors[(i + 5) % aeColors.length], type: '★', parentLabel: art.url && art.url !== "I'M ON IT" ? `${(i + t.exp_data.length + 1)}. ${art.title.slice(0, 12)}` : 'None', id: art.id, url: art.url && art.url !== "I'M ON IT" ? art.url : null, item: art })),
                       ];
                       return allLayers.map((layer, idx) => (
                         <div key={layer.id} className="flex border-b border-[#1e1e1e] ae-row" style={{ height: 22 }}>
                           {/* Left: layer info */}
-                          <div className="w-[45%] flex items-center gap-1 px-1 min-w-0" style={{ backgroundColor: '#232323' }}>
+                          <div className="w-[40%] flex items-center gap-1 px-1 min-w-0" style={{ backgroundColor: '#232323' }}>
                             <Eye size={7} className="text-gray-500 shrink-0" />
                             <span className="text-[8px] font-bold text-gray-500 w-3 text-right shrink-0">{idx + 1}</span>
                             <div className="w-2.5 h-2.5 rounded-[2px] shrink-0" style={{ backgroundColor: layer.color }} />
                             <span className="text-[7px] text-gray-400 shrink-0">{layer.type}</span>
-                            <span className="text-[8px] text-gray-300 truncate">{layer.name}</span>
+                            <span className="text-[8px] text-gray-300 truncate cursor-pointer" onClick={() => { setSelectedExp(layer.item); setMobileTab('monitor'); }}>{layer.name}</span>
                           </div>
                           {/* Center: icons */}
-                          <div className="w-[15%] flex items-center justify-center gap-1 border-l border-[#1a1a1a]" style={{ backgroundColor: '#232323' }}>
+                          <div className="w-[12%] flex items-center justify-center gap-0.5 border-l border-[#1a1a1a]" style={{ backgroundColor: '#232323' }}>
                             <Sparkles size={6} className="text-gray-600" />
-                            <span className="text-[7px] text-gray-600">/</span>
                             <Wand2 size={6} className="text-gray-600" />
                           </div>
+                          {/* Parent & Link */}
+                          <div className="w-[20%] flex items-center border-l border-[#1a1a1a] px-1 min-w-0" style={{ backgroundColor: '#232323' }}>
+                            {layer.url ? (
+                              <a href={layer.url} target="_blank" rel="noopener noreferrer"
+                                className="text-[7px] truncate flex items-center gap-0.5 hover:underline"
+                                style={{ color: '#7dd3fc' }}>
+                                <span className="truncate">{layer.parentLabel}</span>
+                                <ChevronDown size={6} className="shrink-0 opacity-50" />
+                              </a>
+                            ) : (
+                              <span className="text-[7px] text-gray-600 truncate flex items-center gap-0.5">
+                                None <ChevronDown size={6} className="shrink-0 opacity-40" />
+                              </span>
+                            )}
+                          </div>
                           {/* Right: colored bar */}
-                          <div className="w-[40%] relative border-l border-[#1a1a1a]" style={{ backgroundColor: '#1a1a1a' }}>
+                          <div className="w-[28%] relative border-l border-[#1a1a1a]" style={{ backgroundColor: '#1a1a1a' }}>
                             <div className="absolute top-[3px] bottom-[3px] rounded-[1px]"
                               style={{
                                 left: `${(idx * 3) % 20}%`,
