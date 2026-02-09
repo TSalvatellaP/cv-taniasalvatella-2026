@@ -10,6 +10,7 @@ export interface ExperienceItem {
   type?: string;
   color?: string;
   duration?: string;
+  url?: string;
 }
 
 export interface TranslationData {
@@ -68,6 +69,8 @@ export interface TranslationData {
   statusLabel: string;
   outputPath: string;
   startProcessing: string;
+  selectClip: string;
+  undo_toast: string;
   soft_skills: {
     english: string;
     creativity: string;
@@ -107,11 +110,11 @@ export const translations: Record<string, TranslationData> = {
     items: "ELEMENTOS",
     name: "Nombre",
     mediaType: "Tipo de Medio",
-    artisticProjects: "Proyectos_Artísticos",
+    artisticProjects: "Proyectos",
     backToBin: "Volver al Contenedor",
     eduComp: "Educación.comp",
-    workspaceTip: "Consejo del Espacio de Trabajo",
-    tipDesc: "Doble clic para cargar. Usa Exportar para contacto.",
+    workspaceTip: "INFO DE NAVEGACIÓN",
+    tipDesc: "Interacciona con las pantallas. Usa Exportar para contacto.",
     assetInventory: "Inventario de Activos",
     masterMetadata: "Metadatos Maestro",
     playing: "REPRODUCIENDO: TIEMPO REAL",
@@ -134,7 +137,7 @@ export const translations: Record<string, TranslationData> = {
     ignore: "Ignorar",
     dr_warning_title: "Exportación de Proyecto Clásica",
     dr_warning_desc: "Esta versión interactiva ha sido etalonada para web. ¿Deseas descargar la versión master en PDF?",
-    follow_dr: "Seguir en DaVinci Resolve",
+    follow_dr: "Seguir en Davinci Resolve",
     job_title: "Edición | Broadcast | IA",
     layerLabel: "Nombre de capa",
     nodeInput: "Entrada",
@@ -147,6 +150,8 @@ export const translations: Record<string, TranslationData> = {
     statusLabel: "Estado",
     outputPath: "Ruta de Salida",
     startProcessing: "Iniciar Procesamiento",
+    selectClip: "Arrastra un clip aquí",
+    undo_toast: "Deshacer (Ctrl+Z) no disponible en la vida real 😉",
     soft_skills: {
       english: "Inglés_B1",
       creativity: "Creatividad",
@@ -179,10 +184,10 @@ export const translations: Record<string, TranslationData> = {
       { n: "Final Cut Pro X", v: "MID" }, { n: "Adobe Illustrator", v: "BÁSICO" },
       { n: "Cinema 4D", v: "BÁSICO" }
     ],
-    genAiModels: ["Sora", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
+    genAiModels: ["Sora", "ElevenLabs", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
     exp_data: [
       {
-        id: "motion", title: "Edición / Motion", period: "2014–25", company: "Wata Studio / Inmersive Creature",
+        id: "motion", title: "Edición / Motion", period: "2024–25", company: "Wata Studio / Inmersive Creature",
         iconName: "Film", labelPr: "#E085B2", labelAe: "#A680B8",
         fullHistory: [
           { year: "2025 - Actualidad", label: "Wata Studio", desc: "Realización de vídeos promocionales para RRSS, documentales y piezas audiovisuales." },
@@ -219,12 +224,12 @@ export const translations: Record<string, TranslationData> = {
       { year: "2007", label: "TÉCNICO SUPERIOR IMAGEN - IES PUERTA BONITA" }
     ],
     art_data: [
-      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [] },
-      { id: "vid2", title: "Docu: Naturaleza Viva", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [] },
-      { id: "vid3", title: "Corto: Silencio", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [] },
-      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [] },
-      { id: "vid5", title: "Video Arte: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [] },
-      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [] }
+      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [], url: "https://vimeo.com/708694989" },
+      { id: "vid2", title: "Docu: Naturaleza Viva", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid3", title: "Corto: Silencio", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid5", title: "Video Arte: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" }
     ]
   },
   en: {
@@ -243,11 +248,11 @@ export const translations: Record<string, TranslationData> = {
     items: "ITEMS",
     name: "Name",
     mediaType: "Media Type",
-    artisticProjects: "Artistic_Projects",
+    artisticProjects: "Projects",
     backToBin: "Back to Bin",
     eduComp: "Education.comp",
-    workspaceTip: "Workspace Tip",
-    tipDesc: "Double click to load. Use Export for contact.",
+    workspaceTip: "NAVIGATION INFO",
+    tipDesc: "Interact with the screens. Use Export for contact.",
     assetInventory: "Asset Inventory",
     masterMetadata: "Master Metadata",
     playing: "PLAYING: REALTIME",
@@ -283,6 +288,8 @@ export const translations: Record<string, TranslationData> = {
     statusLabel: "Status",
     outputPath: "Output Path",
     startProcessing: "Start Processing",
+    selectClip: "Drag a clip here",
+    undo_toast: "Undo (Ctrl+Z) not available in real life 😉",
     soft_skills: {
       english: "English_B1",
       creativity: "Creativity",
@@ -318,7 +325,7 @@ export const translations: Record<string, TranslationData> = {
     genAiModels: ["Sora", "Grok", "Gemini", "NotebookLM", "Lovable", "Kling"],
     exp_data: [
       {
-        id: "motion", title: "Editing / Motion", period: "2014–25", company: "Wata Studio / Inmersive Creature",
+        id: "motion", title: "Editing / Motion", period: "2024–25", company: "Wata Studio / Inmersive Creature",
         iconName: "Film", labelPr: "#E085B2", labelAe: "#A680B8",
         fullHistory: [
           { year: "2025 - Present", label: "Wata Studio", desc: "Production of promotional videos for social media, documentaries, and audiovisual pieces." },
@@ -355,12 +362,12 @@ export const translations: Record<string, TranslationData> = {
       { year: "2007", label: "HIGHER TECHNICIAN IMAGE - IES PUERTA BONITA" }
     ],
     art_data: [
-      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [] },
-      { id: "vid2", title: "Docu: Nature Alive", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [] },
-      { id: "vid3", title: "Short: Silence", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [] },
-      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [] },
-      { id: "vid5", title: "Video Art: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [] },
-      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [] }
+      { id: "vid1", title: "Showreel 2025", period: "", company: "", iconName: "Play", labelPr: "#FF4B4B", labelAe: "#FF4B4B", color: "#FF4B4B", duration: "00:02:30", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid2", title: "Docu: Nature Alive", period: "", company: "", iconName: "Play", labelPr: "#4BFF4B", labelAe: "#4BFF4B", color: "#4BFF4B", duration: "00:15:00", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid3", title: "Short: Silence", period: "", company: "", iconName: "Play", labelPr: "#4B4BFF", labelAe: "#4B4BFF", color: "#4B4BFF", duration: "00:08:45", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid4", title: "Spot: Neon Lights", period: "", company: "", iconName: "Play", labelPr: "#FFFF4B", labelAe: "#FFFF4B", color: "#FFFF4B", duration: "00:00:30", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid5", title: "Video Art: Glitch", period: "", company: "", iconName: "Play", labelPr: "#FF4BFF", labelAe: "#FF4BFF", color: "#FF4BFF", duration: "00:03:12", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" },
+      { id: "vid6", title: "3D Anim: Abstract", period: "", company: "", iconName: "Play", labelPr: "#4BFFFF", labelAe: "#4BFFFF", color: "#4BFFFF", duration: "00:01:20", type: "video", fullHistory: [], url: "https://vimeo.com/taniasalvatella" }
     ]
   }
 };
