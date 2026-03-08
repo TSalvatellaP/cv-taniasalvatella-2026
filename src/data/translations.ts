@@ -396,7 +396,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:02:30",
         type: "video",
         fullHistory: [],
-        url: "I'M ON IT",
+        url: "https://vimeo.com/1171547123?share=copy&fl=sv&fe=ci",
       },
       {
         id: "vid2",
@@ -723,7 +723,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:02:30",
         type: "video",
         fullHistory: [],
-        url: "I'M ON IT",
+        url: "https://vimeo.com/1171547123?share=copy&fl=sv&fe=ci",
       },
       {
         id: "vid2",
