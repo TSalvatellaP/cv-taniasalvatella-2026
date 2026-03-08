@@ -386,7 +386,7 @@ export const translations: Record<string, TranslationData> = {
     art_data: [
       {
         id: "id1",
-        title: "Showreel 2025",
+        title: "Portfolio 2026",
         period: "",
         company: "",
         iconName: "Play",
@@ -713,7 +713,7 @@ export const translations: Record<string, TranslationData> = {
     art_data: [
       {
         id: "id1",
-        title: "Showreel 2025",
+        title: "Portfolio 2026",
         period: "",
         company: "",
         iconName: "Play",
