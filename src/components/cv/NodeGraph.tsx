@@ -128,7 +128,7 @@ export const NodeGraph = ({ experience, activeMode }: NodeGraphProps) => {
   return (
     <div
       ref={containerRef}
-      className={`w-full h-full relative overflow-hidden ${activeMode === 'color' ? 'bg-[#111] node-grid' : activeMode === 'effects' ? 'bg-[#1D1D1D]' : 'bg-[#1A1A1A]'} ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
+      className={`min-w-full min-h-[600px] h-full relative overflow-hidden ${activeMode === 'color' ? 'bg-[#111] node-grid' : activeMode === 'effects' ? 'bg-[#1D1D1D]' : 'bg-[#1A1A1A]'} ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
       onMouseDown={handleCanvasMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
