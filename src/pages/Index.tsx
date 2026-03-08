@@ -424,8 +424,9 @@ const Index = () => {
                   <div className="text-center z-10 space-y-2 px-4 relative w-full flex flex-col items-center justify-center h-full">
                     {!selectedExp && (
                       <>
-                        <h1 className={`font-black tracking-tighter text-white uppercase leading-none transition-all duration-300 ${monitorFormat === 'landscape' ? 'text-4xl' : 'text-3xl flex flex-col items-center gap-1'}`}>
-                          <span>Tania</span><span>Salvatella</span>
+                        <h1 className={`font-black tracking-tight text-white uppercase leading-[0.95] transition-all duration-300 text-center ${monitorFormat === 'landscape' ? 'text-[clamp(2rem,9vw,2.75rem)]' : 'text-3xl flex flex-col items-center gap-1'}`}>
+                          <span className={monitorFormat === 'landscape' ? 'inline' : 'block'}>Tania</span>
+                          <span className={monitorFormat === 'landscape' ? 'inline ml-2' : 'block'}>Salvatella</span>
                         </h1>
                         <p className="text-[10px] text-gray-500 uppercase tracking-[0.3em] mt-2">{t.job_title}</p>
                       </>
