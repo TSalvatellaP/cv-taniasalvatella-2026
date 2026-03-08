@@ -170,19 +170,19 @@ export const NodeGraph = ({ experience, activeMode }: NodeGraphProps) => {
             </div>
 
             <div className="p-3 flex flex-col gap-2">
-              <div className="flex items-start gap-2">
+              <div className="flex items-start gap-2 shrink-0">
                 <div className="mt-0.5">
                   {activeMode === 'color' ? <Aperture size={12} className="text-muted-foreground" /> : <Layers size={12} className="text-muted-foreground" />}
                 </div>
                 <div>
-                  <h4 className="text-[10px] font-bold text-secondary-foreground leading-tight">{node.data.label}</h4>
-                  <p className="text-[8px] text-muted-foreground font-mono mt-0.5">{node.data.year}</p>
+                  <h4 className="text-[11px] font-bold text-secondary-foreground leading-tight">{node.data.label}</h4>
+                  <p className="text-[9px] text-muted-foreground font-mono mt-0.5">{node.data.year}</p>
                 </div>
               </div>
-              <div className="h-10 w-full bg-black/30 rounded border border-white/5 flex items-center justify-center overflow-hidden relative">
+              <div className="h-10 w-full shrink-0 bg-black/30 rounded border border-white/5 flex items-center justify-center overflow-hidden relative">
                 <Activity size={16} className="text-muted-foreground/30" />
               </div>
-              <p className="text-[9px] text-muted-foreground leading-tight line-clamp-2">{node.data.desc}</p>
+              <p className="text-[10px] text-muted-foreground leading-relaxed pb-1">{node.data.desc}</p>
             </div>
 
             <div className={`absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full ${currentStyle.connector} border border-black`}></div>
