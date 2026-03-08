@@ -25,7 +25,7 @@ export const NodeGraph = ({ experience, activeMode }: NodeGraphProps) => {
   const [nodes, setNodes] = useState<NodeState[]>(() =>
     experience.fullHistory.map((item, index) => ({
       id: index,
-      x: 50 + index * 240,
+      x: 50 + index * 280,
       y: 100 + (index % 2 === 0 ? 0 : 80),
       data: item
     }))
@@ -81,7 +81,7 @@ export const NodeGraph = ({ experience, activeMode }: NodeGraphProps) => {
     const xs = nodes.map(n => n.x);
     const ys = nodes.map(n => n.y);
     const minX = Math.min(...xs);
-    const maxX = Math.max(...xs) + 180;
+    const maxX = Math.max(...xs) + 224;
     const minY = Math.min(...ys);
     const maxY = Math.max(...ys) + 150;
     const graphWidth = maxX - minX;
@@ -111,7 +111,7 @@ export const NodeGraph = ({ experience, activeMode }: NodeGraphProps) => {
   const renderConnections = () =>
     nodes.slice(0, -1).map((node, i) => {
       const nextNode = nodes[i + 1];
-      const startX = node.x + 180;
+      const startX = node.x + 224;
       const startY = node.y + 50;
       const endX = nextNode.x;
       const endY = nextNode.y + 50;
@@ -128,7 +128,7 @@ export const NodeGraph = ({ experience, activeMode }: NodeGraphProps) => {
   return (
     <div
       ref={containerRef}
-      className={`min-w-full min-h-[600px] h-full relative overflow-hidden ${activeMode === 'color' ? 'bg-[#111] node-grid' : activeMode === 'effects' ? 'bg-[#1D1D1D]' : 'bg-[#1A1A1A]'} ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
+      className={`min-w-full min-h-[800px] h-full relative overflow-hidden ${activeMode === 'color' ? 'bg-[#111] node-grid' : activeMode === 'effects' ? 'bg-[#1D1D1D]' : 'bg-[#1A1A1A]'} ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
       onMouseDown={handleCanvasMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -155,7 +155,7 @@ export const NodeGraph = ({ experience, activeMode }: NodeGraphProps) => {
         {nodes.map((node, idx) => (
           <div
             key={node.id}
-            className={`absolute w-44 rounded shadow-2xl cursor-grab active:cursor-grabbing group select-none transition-shadow z-10 flex flex-col overflow-hidden border ${currentStyle.nodeBorder} ${activeMode === 'color' ? 'bg-[#1a1a1a]' : activeMode === 'effects' ? 'bg-[#2D2D2D]' : 'bg-[#232323]'} ${draggingNodeId === node.id ? 'scale-105 z-20 shadow-[0_0_20px_rgba(0,0,0,0.5)]' : ''}`}
+            className={`absolute w-56 rounded shadow-2xl cursor-grab active:cursor-grabbing group select-none transition-shadow z-10 flex flex-col overflow-hidden border ${currentStyle.nodeBorder} ${activeMode === 'color' ? 'bg-[#1a1a1a]' : activeMode === 'effects' ? 'bg-[#2D2D2D]' : 'bg-[#232323]'} ${draggingNodeId === node.id ? 'scale-105 z-20 shadow-[0_0_20px_rgba(0,0,0,0.5)]' : ''}`}
             style={{ left: node.x, top: node.y }}
             onMouseDown={(e) => handleNodeMouseDown(e, node.id)}
           >
