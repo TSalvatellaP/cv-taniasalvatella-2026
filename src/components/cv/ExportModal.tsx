@@ -35,7 +35,7 @@ export const ExportModal = ({ onClose, lang }: ExportModalProps) => {
       url: "", icon: <FileText size={14} />, preset: "Master_PDF_English", isDownload: true, pdfLang: 'en' as const
     },
     { label: "LinkedIn", url: "https://www.linkedin.com/in/taniasalvatella/", icon: <Linkedin size={14} />, preset: "Professional_Profile" },
-    { label: "Vimeo Showreel", url: "https://vimeo.com/taniasalvatella", icon: <Video size={14} />, preset: "Vimeo_Channel" },
+    { label: "Vimeo Portfolio", url: "https://vimeo.com/taniasalvatella", icon: <Video size={14} />, preset: "Vimeo_Channel" },
     { label: "Behance Portfolio", url: "https://www.behance.net/taniasalvatella#", icon: <MonitorPlay size={14} />, preset: "Visual_Arts" },
     { label: "Email", url: "mailto:tsalvatellap@gmail.com", icon: <Mail size={14} />, preset: "Direct_Mail" }
   ];
