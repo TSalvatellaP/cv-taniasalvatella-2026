@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 import { NodeGraph } from './NodeGraph';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import type { ExperienceItem } from '@/data/translations';
 
 type Mode = 'editing' | 'effects' | 'color';
@@ -33,9 +34,9 @@ export const ExperienceDetailMonitor = ({ experience, onClose, accentColor, mode
         </button>
       </div>
 
-      <div className="flex-1 overflow-hidden relative bg-[#0f0f0f]">
+      <ScrollArea className="flex-1 bg-[#0f0f0f]">
         <NodeGraph experience={experience} activeMode={mode} />
-      </div>
+      </ScrollArea>
 
       <div className="h-8 bg-[#0a0a0a] border-t border-white/5 flex items-center px-4 justify-between text-[10px] text-muted-foreground/50 font-mono uppercase tracking-widest shrink-0 z-20">
         <span>Source: {experience.id}_SEQUENCE_V1</span>
