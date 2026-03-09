@@ -1130,22 +1130,22 @@ const Index = () => {
                         <div className="bg-[#00214c] flex-[1.2]"></div><div className="bg-[#ffffff] flex-[1.2]"></div><div className="bg-[#32006a] flex-[1.2]"></div><div className="bg-[#131313] flex-[4]"></div>
                       </div>
                     </div>
-                    <div className="absolute inset-0 z-10 p-3 md:p-4 lg:p-5 flex flex-col justify-start items-start text-foreground bg-black/40 backdrop-blur-sm overflow-y-auto custom-scrollbar">
-                      <div className="w-full flex justify-between items-end border-b-2 border-foreground/70 mb-3 pb-2">
-                        <h2 className={`${monitorFormat === 'portrait' ? 'text-xl' : 'text-2xl md:text-3xl'} font-black uppercase tracking-tight bg-black/50 px-2`}>{t.education_title}</h2>
-                        <span className="text-[9px] md:text-xs font-mono bg-black/50 px-2">REF: EDU_SEQ_01</span>
+                    <div className="absolute inset-0 z-10 p-2 md:p-3 lg:p-4 flex flex-col justify-start items-start text-foreground bg-black/40 backdrop-blur-sm overflow-y-auto custom-scrollbar">
+                      <div className="w-full flex justify-between items-end border-b-2 border-foreground/70 mb-2 pb-1.5">
+                        <h2 className={`${monitorFormat === 'portrait' ? 'text-xl' : 'text-lg md:text-2xl'} font-black uppercase tracking-tight bg-black/50 px-2`}>{t.education_title}</h2>
+                        <span className="text-[9px] md:text-[10px] font-mono bg-black/50 px-2">REF: EDU_SEQ_01</span>
                       </div>
-                      <div className="space-y-2 md:space-y-3 w-full max-w-5xl mx-auto">
+                      <div className="space-y-1 md:space-y-1.5 w-full max-w-5xl mx-auto">
                         {t.edu_data.map((edu, i) => (
-                          <div key={i} className={`flex ${monitorFormat === 'portrait' ? 'flex-col gap-1' : 'md:grid md:grid-cols-[5.5rem_minmax(0,1fr)] md:gap-4'} items-start group w-full bg-black/30 px-2 py-2 hover:bg-black/60 transition-colors`}>
-                            <span className="text-premiere font-black text-lg md:text-xl w-24 shrink-0 leading-none">{edu.year}</span>
-                            <div className="flex-1 border-b border-foreground/30 pb-2 group-hover:border-foreground/60 transition-colors w-full min-w-0">
-                              <span className={`${monitorFormat === 'portrait' ? 'text-[11px]' : 'text-xs md:text-base lg:text-lg'} block font-bold uppercase tracking-tight leading-snug break-words`}>{edu.label}</span>
+                          <div key={i} className={`flex ${monitorFormat === 'portrait' ? 'flex-col gap-1' : 'md:grid md:grid-cols-[5rem_minmax(0,1fr)] md:gap-3'} items-start group w-full bg-black/30 px-2 py-1 md:py-1.5 hover:bg-black/60 transition-colors`}>
+                            <span className="text-premiere font-black text-base md:text-lg w-20 shrink-0 leading-none">{edu.year}</span>
+                            <div className="flex-1 border-b border-foreground/30 pb-1 group-hover:border-foreground/60 transition-colors w-full min-w-0">
+                              <span className={`${monitorFormat === 'portrait' ? 'text-[11px]' : 'text-[11px] md:text-sm lg:text-base'} block font-bold uppercase tracking-tight leading-tight break-words`}>{edu.label}</span>
                             </div>
                           </div>
                         ))}
                       </div>
-                      <div className="mt-3 pt-3 text-[10px] font-mono text-muted-foreground w-full flex justify-between bg-black/50 p-2">
+                      <div className="mt-2 pt-2 text-[9px] font-mono text-muted-foreground w-full justify-between bg-black/50 p-1.5 hidden 2xl:flex">
                         <span>SMPTE UNIVERSAL LEADER</span>
                         <span>TC: {getTimecode(playheadPos)}</span>
                       </div>
