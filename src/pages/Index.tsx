@@ -421,7 +421,7 @@ const Index = () => {
                   {selectedExp && selectedExp.type !== 'video' && selectedExp.type !== 'education' && (
                     <ExperienceDetailMonitor experience={selectedExp} onClose={() => setSelectedExpId(null)} accentColor={headerInfo.accent} mode={activeMode} getExpIcon={getExpIcon} />
                   )}
-                  <div className="text-center z-10 space-y-2 px-4 relative w-full flex flex-col items-center justify-center h-full">
+                  <div className={`text-center z-10 space-y-2 px-4 relative w-full flex flex-col h-full ${selectedExp?.type === 'education' ? 'items-stretch justify-start' : 'items-center justify-center'}`}>
                     {!selectedExp && (
                       <>
                         <h1 className={`font-black tracking-tight text-white uppercase leading-[0.95] transition-all duration-300 text-center ${monitorFormat === 'landscape' ? 'text-[clamp(2rem,9vw,2.75rem)]' : 'text-3xl flex flex-col items-center gap-1'}`}>
@@ -432,12 +432,12 @@ const Index = () => {
                       </>
                     )}
                     {selectedExp?.type === 'education' && (
-                      <div className="w-full h-full p-4 overflow-y-auto">
+                      <div className="w-full h-full p-4 pb-24 overflow-y-auto">
                         <h2 className="text-2xl font-black text-white mb-4">{t.education_title}</h2>
                         {t.edu_data.map((edu, i) => (
                           <div key={i} className="mb-4 text-left border-l-2 border-emerald-500 pl-3">
                             <div className="text-emerald-400 font-bold text-lg">{edu.year}</div>
-                            <div className="text-white text-xs leading-tight">{edu.label}</div>
+                            <div className="text-white text-[11px] leading-snug break-words">{edu.label}</div>
                           </div>
                         ))}
                       </div>
@@ -449,13 +449,15 @@ const Index = () => {
                       </div>
                     )}
                   </div>
-                  <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center z-20">
-                    <SkipBack size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))} />
-                    <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg active:scale-95">
-                      {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" className="ml-1" />}
-                    </button>
-                    <SkipForward size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.min(100, playheadPos + 10))} />
-                  </div>
+                  {selectedExp?.type !== 'education' && (
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center z-20">
+                      <SkipBack size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))} />
+                      <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg active:scale-95">
+                        {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" className="ml-1" />}
+                      </button>
+                      <SkipForward size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.min(100, playheadPos + 10))} />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1130,22 +1132,22 @@ const Index = () => {
                         <div className="bg-[#00214c] flex-[1.2]"></div><div className="bg-[#ffffff] flex-[1.2]"></div><div className="bg-[#32006a] flex-[1.2]"></div><div className="bg-[#131313] flex-[4]"></div>
                       </div>
                     </div>
-                    <div className="absolute inset-0 z-10 p-4 md:p-8 flex flex-col justify-center items-start text-foreground bg-black/40 backdrop-blur-sm overflow-y-auto custom-scrollbar">
-                      <div className="w-full flex justify-between items-end border-b-4 border-white mb-6 pb-2">
-                        <h2 className={`${monitorFormat === 'portrait' ? 'text-3xl' : 'text-3xl md:text-5xl'} font-black uppercase tracking-tighter bg-black/50 px-2`}>{t.education_title}</h2>
-                        <span className="text-xs md:text-sm font-mono bg-black/50 px-2">REF: EDU_SEQ_01</span>
+                    <div className="absolute inset-0 z-10 p-2 md:p-3 lg:p-4 flex flex-col justify-start items-start text-foreground bg-black/40 backdrop-blur-sm overflow-y-auto custom-scrollbar">
+                      <div className="w-full flex justify-between items-end border-b-2 border-foreground/70 mb-2 pb-1.5">
+                        <h2 className={`${monitorFormat === 'portrait' ? 'text-xl' : 'text-lg md:text-2xl'} font-black uppercase tracking-tight bg-black/50 px-2`}>{t.education_title}</h2>
+                        <span className="text-[9px] md:text-[10px] font-mono bg-black/50 px-2">REF: EDU_SEQ_01</span>
                       </div>
-                      <div className="space-y-6 w-full max-w-4xl mx-auto">
+                      <div className="space-y-1 md:space-y-1.5 w-full max-w-5xl mx-auto">
                         {t.edu_data.map((edu, i) => (
-                          <div key={i} className={`flex ${monitorFormat === 'portrait' ? 'flex-col gap-1' : 'flex-col md:flex-row md:gap-6'} items-baseline group w-full bg-black/30 p-2 hover:bg-black/60 transition-colors`}>
-                            <span className="text-premiere font-black text-xl md:text-2xl w-24 shrink-0">{edu.year}</span>
-                            <div className="flex-1 border-b border-white/20 pb-2 group-hover:border-white/60 transition-colors w-full">
-                              <span className={`${monitorFormat === 'portrait' ? 'text-xs' : 'text-sm md:text-lg'} font-bold uppercase tracking-tight`}>{edu.label}</span>
+                          <div key={i} className={`flex ${monitorFormat === 'portrait' ? 'flex-col gap-1' : 'md:grid md:grid-cols-[5rem_minmax(0,1fr)] md:gap-3'} items-start group w-full bg-black/30 px-2 py-1 md:py-1.5 hover:bg-black/60 transition-colors`}>
+                            <span className="text-premiere font-black text-base md:text-lg w-20 shrink-0 leading-none">{edu.year}</span>
+                            <div className="flex-1 border-b border-foreground/30 pb-1 group-hover:border-foreground/60 transition-colors w-full min-w-0">
+                              <span className={`${monitorFormat === 'portrait' ? 'text-[11px]' : 'text-[11px] md:text-sm lg:text-base'} block font-bold uppercase tracking-tight leading-tight break-words`}>{edu.label}</span>
                             </div>
                           </div>
                         ))}
                       </div>
-                      <div className="mt-auto pt-8 text-[10px] font-mono text-muted-foreground w-full flex justify-between bg-black/50 p-2">
+                      <div className="mt-2 pt-2 text-[9px] font-mono text-muted-foreground w-full justify-between bg-black/50 p-1.5 hidden 2xl:flex">
                         <span>SMPTE UNIVERSAL LEADER</span>
                         <span>TC: {getTimecode(playheadPos)}</span>
                       </div>
