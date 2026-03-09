@@ -449,13 +449,15 @@ const Index = () => {
                       </div>
                     )}
                   </div>
-                  <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center z-20">
-                    <SkipBack size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))} />
-                    <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg active:scale-95">
-                      {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" className="ml-1" />}
-                    </button>
-                    <SkipForward size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.min(100, playheadPos + 10))} />
-                  </div>
+                  {selectedExp?.type !== 'education' && (
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center z-20">
+                      <SkipBack size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))} />
+                      <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg active:scale-95">
+                        {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" className="ml-1" />}
+                      </button>
+                      <SkipForward size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.min(100, playheadPos + 10))} />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
