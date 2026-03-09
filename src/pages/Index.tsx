@@ -432,12 +432,12 @@ const Index = () => {
                       </>
                     )}
                     {selectedExp?.type === 'education' && (
-                      <div className="w-full h-full p-4 overflow-y-auto">
+                      <div className="w-full h-full p-4 pb-24 overflow-y-auto">
                         <h2 className="text-2xl font-black text-white mb-4">{t.education_title}</h2>
                         {t.edu_data.map((edu, i) => (
                           <div key={i} className="mb-4 text-left border-l-2 border-emerald-500 pl-3">
                             <div className="text-emerald-400 font-bold text-lg">{edu.year}</div>
-                            <div className="text-white text-xs leading-tight">{edu.label}</div>
+                            <div className="text-white text-[11px] leading-snug break-words">{edu.label}</div>
                           </div>
                         ))}
                       </div>
