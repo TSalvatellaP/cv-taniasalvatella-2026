@@ -421,7 +421,7 @@ const Index = () => {
                   {selectedExp && selectedExp.type !== 'video' && selectedExp.type !== 'education' && (
                     <ExperienceDetailMonitor experience={selectedExp} onClose={() => setSelectedExpId(null)} accentColor={headerInfo.accent} mode={activeMode} getExpIcon={getExpIcon} />
                   )}
-                  <div className="text-center z-10 space-y-2 px-4 relative w-full flex flex-col items-center justify-center h-full">
+                  <div className={`text-center z-10 space-y-2 px-4 relative w-full flex flex-col h-full ${selectedExp?.type === 'education' ? 'items-stretch justify-start' : 'items-center justify-center'}`}>
                     {!selectedExp && (
                       <>
                         <h1 className={`font-black tracking-tight text-white uppercase leading-[0.95] transition-all duration-300 text-center ${monitorFormat === 'landscape' ? 'text-[clamp(2rem,9vw,2.75rem)]' : 'text-3xl flex flex-col items-center gap-1'}`}>
