@@ -424,7 +424,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:08:45",
         type: "video",
         fullHistory: [],
-        url: "https://youtube.com/shorts/XeqgD063uGs?feature=share",
+        url: "https://youtube.com/shorts/x_EzN1KdF7w?feature=share",
       },
       {
         id: "vid4",
@@ -751,7 +751,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:08:45",
         type: "video",
         fullHistory: [],
-        url: "https://youtube.com/shorts/XeqgD063uGs?feature=share",
+        url: "https://youtube.com/shorts/x_EzN1KdF7w?feature=share",
       },
       {
         id: "vid4",
