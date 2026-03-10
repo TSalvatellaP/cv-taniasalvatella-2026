@@ -1054,7 +1054,7 @@ const Index = () => {
                     <div className="grid grid-cols-2 gap-2 p-2 bg-[#1A1A1A] flex-1 overflow-y-auto">
                       {t.art_data.map(proj => (
                         <div key={proj.id} draggable onDragStart={(e) => handleDragStart(e, proj)}
-                          onClick={() => { setSelectedExp(proj); if (proj.url) openUrl(proj.url); }}
+                          onClick={() => { setSelectedExp(proj); if (proj.url && proj.type !== 'video') openUrl(proj.url); }}
                           className={`group flex flex-col cursor-grab active:cursor-grabbing draggable-item transition-all border border-transparent hover:border-white/20 rounded overflow-hidden ${selectedExp?.id === proj.id ? 'ring-1 ring-white/40' : ''}`}>
                           <div className="aspect-video bg-[#0f0f0f] relative flex items-center justify-center overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-br from-black/0 to-black/80"></div>
