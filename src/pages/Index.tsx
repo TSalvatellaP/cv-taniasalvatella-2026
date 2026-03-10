@@ -722,7 +722,7 @@ const Index = () => {
                           {t.art_data.slice(0, 3).map((art, idx) => (
                             <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
                               style={{ backgroundColor: `${art.color || art.labelPr}25` }}
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") { if (art.type === 'video') { setSelectedExp(art); } else { openUrl(art.url); } } }}>
                               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
                               <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
                               <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
