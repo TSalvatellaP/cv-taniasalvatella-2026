@@ -424,7 +424,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:08:45",
         type: "video",
         fullHistory: [],
-        url: "https://www.instagram.com/gournay_es?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+        url: "https://youtube.com/shorts/XeqgD063uGs?feature=share",
       },
       {
         id: "vid4",
@@ -751,7 +751,7 @@ export const translations: Record<string, TranslationData> = {
         duration: "00:08:45",
         type: "video",
         fullHistory: [],
-        url: "https://www.instagram.com/gournay_es?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+        url: "https://youtube.com/shorts/XeqgD063uGs?feature=share",
       },
       {
         id: "vid4",
