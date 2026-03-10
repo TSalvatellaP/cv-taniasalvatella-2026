@@ -133,6 +133,22 @@ const Index = () => {
     document.body.removeChild(a);
   };
 
+  const getEmbedUrl = (url: string): string | null => {
+    try {
+      // YouTube standard
+      const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/);
+      if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`;
+      // YouTube Shorts
+      const ytShort = url.match(/youtube\.com\/shorts\/([^?&#]+)/);
+      if (ytShort) return `https://www.youtube.com/embed/${ytShort[1]}?autoplay=1&rel=0`;
+      // Vimeo video
+      const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+      if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
+      // Vimeo channel/user page — not embeddable
+      return null;
+    } catch { return null; }
+  };
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -452,14 +468,24 @@ const Index = () => {
                         ))}
                       </div>
                     )}
-                    {selectedExp?.type === 'video' && (
-                      <div className="text-center">
-                        <h2 className="text-xl font-black text-white uppercase">{selectedExp.title}</h2>
-                        <p className="text-xs text-gray-400 mt-1">{selectedExp.duration}</p>
-                      </div>
+                    {selectedExp?.type === 'video' && selectedExp.url && (
+                      (() => {
+                        const embedSrc = getEmbedUrl(selectedExp.url);
+                        return embedSrc ? (
+                          <div className="absolute inset-0 z-30 bg-black flex flex-col">
+                            <button onClick={() => setSelectedExpId(null)} className="absolute top-2 right-2 z-40 bg-black/70 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold hover:bg-black">✕</button>
+                            <iframe src={embedSrc} className="w-full h-full" allow="autoplay; fullscreen; encrypted-media" allowFullScreen frameBorder="0" />
+                          </div>
+                        ) : (
+                          <div className="text-center z-30 absolute inset-0 flex flex-col items-center justify-center bg-black">
+                            <h2 className="text-xl font-black text-white uppercase mb-2">{selectedExp.title}</h2>
+                            <button onClick={() => openUrl(selectedExp.url!)} className="px-4 py-2 bg-premiere text-white rounded text-xs font-bold mt-2">Abrir en nueva pestaña ↗</button>
+                          </div>
+                        );
+                      })()
                     )}
-                  </div>
-                  {selectedExp?.type !== 'education' && (
+                   </div>
+                  {selectedExp?.type !== 'education' && selectedExp?.type !== 'video' && (
                     <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center z-20">
                       <SkipBack size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))} />
                       <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg active:scale-95">
@@ -534,7 +560,7 @@ const Index = () => {
                         <div className="flex-1 relative flex items-stretch overflow-hidden">
                           {t.art_data.slice(0, 4).map((art, idx) => (
                             <div key={idx} className="flex-1 relative cursor-pointer active:brightness-125 transition-all min-w-0 border-r border-[#111]"
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") { if (art.type === 'video') { setSelectedExp(art); } else { openUrl(art.url); } } }}>
                               {/* Thumbnail strip at top */}
                               <div className="absolute inset-0 bg-gradient-to-b from-[#3a5a7a] to-[#2a4060]" />
                               {/* Vertical bars (thumbnail markers) */}
@@ -696,7 +722,7 @@ const Index = () => {
                           {t.art_data.slice(0, 3).map((art, idx) => (
                             <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
                               style={{ backgroundColor: `${art.color || art.labelPr}25` }}
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") { if (art.type === 'video') { setSelectedExp(art); } else { openUrl(art.url); } } }}>
                               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
                               <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
                               <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
@@ -711,7 +737,7 @@ const Index = () => {
                           {t.art_data.slice(3).map((art, idx) => (
                             <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
                               style={{ backgroundColor: `${art.color || art.labelPr}25` }}
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") { if (art.type === 'video') { setSelectedExp(art); } else { openUrl(art.url); } } }}>
                               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
                               <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
                               <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
@@ -1028,7 +1054,7 @@ const Index = () => {
                     <div className="grid grid-cols-2 gap-2 p-2 bg-[#1A1A1A] flex-1 overflow-y-auto">
                       {t.art_data.map(proj => (
                         <div key={proj.id} draggable onDragStart={(e) => handleDragStart(e, proj)}
-                          onClick={() => { setSelectedExp(proj); if (proj.url) openUrl(proj.url); }}
+                          onClick={() => { setSelectedExp(proj); if (proj.url && proj.type !== 'video') openUrl(proj.url); }}
                           className={`group flex flex-col cursor-grab active:cursor-grabbing draggable-item transition-all border border-transparent hover:border-white/20 rounded overflow-hidden ${selectedExp?.id === proj.id ? 'ring-1 ring-white/40' : ''}`}>
                           <div className="aspect-video bg-[#0f0f0f] relative flex items-center justify-center overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-br from-black/0 to-black/80"></div>
@@ -1164,28 +1190,29 @@ const Index = () => {
                     </div>
                   </div>
                 ) : isVideoSelected && selectedExp ? (
-                  <div className="w-full h-full absolute inset-0 bg-black flex flex-col items-center justify-center animate-in fade-in duration-500 overflow-hidden">
-                    <div className={`absolute inset-0 opacity-40 transition-all duration-300 ${signalStatus === 'POOR' ? 'signal-pixelated' : ''} ${signalStatus === 'FROZEN' ? 'signal-frozen' : ''}`}
-                      style={{ background: `radial-gradient(circle at center, ${selectedExp.color}20 0%, transparent 70%)` }}></div>
-                    <div className="relative z-10 text-center space-y-4">
-                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded text-[10px] font-black tracking-widest border transition-all duration-300 ${
-                        signalStatus === 'LIVE' ? 'bg-red-600/20 text-red-500 border-red-500/30 animate-pulse' : signalStatus === 'POOR' ? 'bg-yellow-600/20 text-yellow-500 border-yellow-500/30' : 'bg-[#333]/50 text-muted-foreground border-muted/30'}`}>
-                        <Circle size={8} fill="currentColor" /> {signalStatus === 'LIVE' ? 'REC [PLAY]' : signalStatus === 'POOR' ? 'POOR SIGNAL' : 'CONNECTION LOST'}
+                  (() => {
+                    const embedSrc = selectedExp.url ? getEmbedUrl(selectedExp.url) : null;
+                    return embedSrc ? (
+                      <div className="w-full h-full absolute inset-0 bg-black animate-in fade-in duration-500 overflow-hidden">
+                        <button onClick={() => setSelectedExpId(null)} className="absolute top-2 right-2 z-40 bg-black/70 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold hover:bg-white/20 transition-colors">✕</button>
+                        <iframe src={embedSrc} className="w-full h-full" allow="autoplay; fullscreen; encrypted-media" allowFullScreen frameBorder="0" />
                       </div>
-                      <h2 className={`${monitorFormat === 'portrait' ? 'text-2xl' : 'text-3xl md:text-5xl'} font-black text-foreground uppercase tracking-tight transition-all duration-100 ${signalStatus === 'POOR' ? 'signal-pixelated blur-sm scale-105' : ''} ${signalStatus === 'FROZEN' ? 'opacity-50' : ''}`}>{selectedExp.title}</h2>
-                      <p className="text-muted-foreground font-mono text-xs">{selectedExp.duration} • 4K RAW • S-LOG3</p>
-                      {signalStatus !== 'LIVE' && (
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                          {signalStatus === 'POOR' ? <WifiOff size={48} className="text-yellow-500/50 animate-pulse" /> : <div className="w-12 h-12 border-4 border-muted border-t-foreground rounded-full animate-spin"></div>}
+                    ) : (
+                      <div className="w-full h-full absolute inset-0 bg-black flex flex-col items-center justify-center animate-in fade-in duration-500 overflow-hidden">
+                        <div className={`absolute inset-0 opacity-40 transition-all duration-300 ${signalStatus === 'POOR' ? 'signal-pixelated' : ''} ${signalStatus === 'FROZEN' ? 'signal-frozen' : ''}`}
+                          style={{ background: `radial-gradient(circle at center, ${selectedExp.color}20 0%, transparent 70%)` }}></div>
+                        <div className="relative z-10 text-center space-y-4">
+                          <h2 className={`${monitorFormat === 'portrait' ? 'text-2xl' : 'text-3xl md:text-5xl'} font-black text-foreground uppercase tracking-tight`}>{selectedExp.title}</h2>
+                          <p className="text-muted-foreground font-mono text-xs">{selectedExp.duration}</p>
+                          {selectedExp.url && (
+                            <button onClick={() => openUrl(selectedExp.url!)} className="px-4 py-2 bg-premiere text-white rounded text-xs font-bold mt-2 hover:bg-premiere/80 transition-colors">
+                              Abrir en nueva pestaña ↗
+                            </button>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <SkipBack className="text-foreground hover:text-premiere cursor-pointer" />
-                      <Pause className="text-foreground hover:text-premiere cursor-pointer" />
-                      <SkipForward className="text-foreground hover:text-premiere cursor-pointer" />
-                    </div>
-                  </div>
+                      </div>
+                    );
+                  })()
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full w-full px-4 overflow-hidden">
                     <div className={`inline-block px-3 py-1 rounded text-[8px] md:text-[10px] font-black text-foreground uppercase tracking-[0.2em] shadow-lg transition-all duration-500 ${
