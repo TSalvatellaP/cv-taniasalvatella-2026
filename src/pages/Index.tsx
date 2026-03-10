@@ -534,7 +534,7 @@ const Index = () => {
                         <div className="flex-1 relative flex items-stretch overflow-hidden">
                           {t.art_data.slice(0, 4).map((art, idx) => (
                             <div key={idx} className="flex-1 relative cursor-pointer active:brightness-125 transition-all min-w-0 border-r border-[#111]"
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
                               {/* Thumbnail strip at top */}
                               <div className="absolute inset-0 bg-gradient-to-b from-[#3a5a7a] to-[#2a4060]" />
                               {/* Vertical bars (thumbnail markers) */}
