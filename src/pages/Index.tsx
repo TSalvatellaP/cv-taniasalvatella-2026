@@ -468,14 +468,24 @@ const Index = () => {
                         ))}
                       </div>
                     )}
-                    {selectedExp?.type === 'video' && (
-                      <div className="text-center">
-                        <h2 className="text-xl font-black text-white uppercase">{selectedExp.title}</h2>
-                        <p className="text-xs text-gray-400 mt-1">{selectedExp.duration}</p>
-                      </div>
+                    {selectedExp?.type === 'video' && selectedExp.url && (
+                      (() => {
+                        const embedSrc = getEmbedUrl(selectedExp.url);
+                        return embedSrc ? (
+                          <div className="absolute inset-0 z-30 bg-black flex flex-col">
+                            <button onClick={() => setSelectedExpId(null)} className="absolute top-2 right-2 z-40 bg-black/70 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold hover:bg-black">✕</button>
+                            <iframe src={embedSrc} className="w-full h-full" allow="autoplay; fullscreen; encrypted-media" allowFullScreen frameBorder="0" />
+                          </div>
+                        ) : (
+                          <div className="text-center z-30 absolute inset-0 flex flex-col items-center justify-center bg-black">
+                            <h2 className="text-xl font-black text-white uppercase mb-2">{selectedExp.title}</h2>
+                            <button onClick={() => openUrl(selectedExp.url!)} className="px-4 py-2 bg-premiere text-white rounded text-xs font-bold mt-2">Abrir en nueva pestaña ↗</button>
+                          </div>
+                        );
+                      })()
                     )}
-                  </div>
-                  {selectedExp?.type !== 'education' && (
+                   </div>
+                  {selectedExp?.type !== 'education' && selectedExp?.type !== 'video' && (
                     <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center z-20">
                       <SkipBack size={20} className="text-white drop-shadow-md" onClick={() => setPlayheadPos(Math.max(0, playheadPos - 10))} />
                       <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg active:scale-95">
