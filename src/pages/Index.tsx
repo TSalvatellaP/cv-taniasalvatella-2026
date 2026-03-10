@@ -123,6 +123,16 @@ const Index = () => {
     setTimeout(() => setIsGlitching(false), 600);
   };
 
+  const openUrl = (url: string) => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -524,7 +534,7 @@ const Index = () => {
                         <div className="flex-1 relative flex items-stretch overflow-hidden">
                           {t.art_data.slice(0, 4).map((art, idx) => (
                             <div key={idx} className="flex-1 relative cursor-pointer active:brightness-125 transition-all min-w-0 border-r border-[#111]"
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
                               {/* Thumbnail strip at top */}
                               <div className="absolute inset-0 bg-gradient-to-b from-[#3a5a7a] to-[#2a4060]" />
                               {/* Vertical bars (thumbnail markers) */}
@@ -686,7 +696,7 @@ const Index = () => {
                           {t.art_data.slice(0, 3).map((art, idx) => (
                             <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
                               style={{ backgroundColor: `${art.color || art.labelPr}25` }}
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
                               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
                               <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
                               <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
@@ -701,7 +711,7 @@ const Index = () => {
                           {t.art_data.slice(3).map((art, idx) => (
                             <div key={idx} className="flex-1 border-r border-black/50 h-full relative cursor-pointer active:brightness-125 transition-all min-w-0"
                               style={{ backgroundColor: `${art.color || art.labelPr}25` }}
-                              onClick={() => { if (art.url && art.url !== "I'M ON IT") window.open(art.url, '_blank'); }}>
+                              onClick={() => { if (art.url && art.url !== "I'M ON IT") openUrl(art.url); }}>
                               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: art.color || art.labelPr }} />
                               <span className="absolute top-1 left-1 right-1 text-[7px] font-bold truncate leading-tight" style={{ color: art.color || art.labelPr }}>{art.title}</span>
                               <span className="absolute bottom-0.5 left-1 text-[6px] text-gray-500 font-mono">{art.duration}</span>
@@ -1018,7 +1028,7 @@ const Index = () => {
                     <div className="grid grid-cols-2 gap-2 p-2 bg-[#1A1A1A] flex-1 overflow-y-auto">
                       {t.art_data.map(proj => (
                         <div key={proj.id} draggable onDragStart={(e) => handleDragStart(e, proj)}
-                          onClick={() => { setSelectedExp(proj); if (proj.url) window.open(proj.url, '_blank'); }}
+                          onClick={() => { setSelectedExp(proj); if (proj.url) openUrl(proj.url); }}
                           className={`group flex flex-col cursor-grab active:cursor-grabbing draggable-item transition-all border border-transparent hover:border-white/20 rounded overflow-hidden ${selectedExp?.id === proj.id ? 'ring-1 ring-white/40' : ''}`}>
                           <div className="aspect-video bg-[#0f0f0f] relative flex items-center justify-center overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-br from-black/0 to-black/80"></div>
