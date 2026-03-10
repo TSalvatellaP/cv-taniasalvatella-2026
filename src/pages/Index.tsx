@@ -133,6 +133,22 @@ const Index = () => {
     document.body.removeChild(a);
   };
 
+  const getEmbedUrl = (url: string): string | null => {
+    try {
+      // YouTube standard
+      const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/);
+      if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`;
+      // YouTube Shorts
+      const ytShort = url.match(/youtube\.com\/shorts\/([^?&#]+)/);
+      if (ytShort) return `https://www.youtube.com/embed/${ytShort[1]}?autoplay=1&rel=0`;
+      // Vimeo video
+      const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+      if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
+      // Vimeo channel/user page — not embeddable
+      return null;
+    } catch { return null; }
+  };
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
