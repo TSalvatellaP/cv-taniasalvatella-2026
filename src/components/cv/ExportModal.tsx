@@ -83,7 +83,7 @@ export const ExportModal = ({ onClose, lang }: ExportModalProps) => {
                   className={`rounded-md p-3 border border-black/30 active:scale-[0.98] transition-all cursor-pointer ${link.isDownload ? 'bg-blue-500/10 border-blue-500/20' : 'bg-[#262626]'}`}
                   onClick={() => {
                     if (link.isDownload && link.pdfLang) handleDownload(idx, link.pdfLang);
-                    else if (link.url) window.open(link.url, '_blank');
+                    else if (link.url) { const a = document.createElement('a'); a.href = link.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
                   }}
                 >
                   <div className="flex items-center justify-between">
